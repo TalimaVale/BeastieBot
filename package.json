@@ -10,9 +10,9 @@
     "beastie",
     "beastiebot"
   ],
-  "homepage": "github repo",
+  "homepage": "https://github.com/teamTALIMA/BeastieBot",
   "bugs": {
-    "url": "github repo issues",
+    "url": "https://github.com/teamTALIMA/BeastieBot/issues",
     "email": "teamTALIMA@gmail.com"
   },
   "license": "GNU GPLv3",
