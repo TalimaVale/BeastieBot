@@ -1,0 +1,11 @@
+# Node Module Folders
+
+/[Nn]ode_modules/
+
+
+
+# Secret Files
+
+config/secrets.js
+ideas.js
+ideas2.js

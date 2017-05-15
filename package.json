@@ -1,0 +1,26 @@
+{
+  "name": "ttsbeastie",
+  "version": "1.0.1",
+  "description": "teamTALIMA's personal BeastieBot, trained to watch over Twitch chatrooms and Discord servers",
+  "keywords": [
+    "twitch",
+    "irc bot",
+    "discord bot",
+    "teamTALIMA",
+    "beastie",
+    "beastiebot"
+  ],
+  "homepage": "github repo",
+  "bugs": {
+    "url": "github repo issues",
+    "email": "teamTALIMA@gmail.com"
+  },
+  "license": "GNU GPLv3",
+  "author": "Talima Vale <teamTALIMA@gmail.com> (twitch.tv/teamTALIMA)",
+  "contributors": [],
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "tmi.js": "^1.1.2"
+  }
+}
