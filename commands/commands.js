@@ -16,6 +16,15 @@ const clearance = require("./clearance");
 const raid = require("./raids");
 
 
+// Helper function for responding to the user with a generic/non-interactive reply in the format of "@{username}, {text}".
+// Usage: 
+// var commands = {
+//   "hello": reply("Hello!"), // => replies with "@{username}, Hello!"
+// };
+const reply = (text) => clearance.viewer((channel, userstate) => {
+    queue.addMessage( channel, "@" + beastieFunctions.getUsername(userstate) + ", " + text);
+});
+
 
 /**
  * TTsBEASTIE COMMANDS
@@ -41,6 +50,20 @@ const raid = require("./raids");
  */
 
 var commands = {
+
+    // LINKS - Beastie says to the user a link in the format of "@{username}, {url}"
+    // TODO: Maybe this should be refactored so all of the links are configured in another file for other streamers who run Beastie.
+    "twitter": reply("https://twitter.com/talimavale"),
+    "patreon": reply("https://www.patreon.com/talimavale"),
+    "github": reply("https://github.com/teamTALIMA"),
+    "gitlab": reply("https://gitlab.com/teamTALIMA"),
+    "discord": reply("https://discord.gg/dGFQ5tE"),
+    "instagram": reply("https://www.instagram.com/talimavale"),
+    "youtube": reply("https://www.youtube.com/channel/UCQEtRUEQItKpn-q_ZBJXUVQ"),
+    "teamsite": reply("http://teamtalima.com"),
+    "teamwall": reply("http://teamtalima.com/team-wall/"),
+
+
     // GOODBYE-BEASTIE - Beastie says goodbye back to user
     "goodbyebeastie": clearance.viewer(
                         function(channel, userstate){
@@ -115,7 +138,7 @@ var commands = {
                                         var minutes = Math.floor(diff / 60) % 60;
                                         var seconds = Math.floor(diff - (hours * 60 * 60) - (minutes * 60));
 
-                                        queue.addMessage( channel, secrets.broadcaster.username + " has been LIVE for: " + hours + " hours " + minutes + " minutes " + seconds + " seconds. rawr");
+                                        queue.addMessage( channel, "teamTALIMA has been LIVE for: " + hours + " hours " + minutes + " minutes " + seconds + " seconds. rawr");
                                     }
                                 });
                             }
