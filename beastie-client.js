@@ -14,7 +14,7 @@ const secrets = require("./config/secrets");
 var beastie = new tmi.client(
     _.defaults({
         identity: secrets.TTsBeastie,
-        channels: ["#teamTALIMA"]
+        channels: [secrets.broadcaster.username]
     },  require ("./config/config"))
 );
 

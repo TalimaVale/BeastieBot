@@ -4,6 +4,7 @@
 
 // Setup Files
 const beastie = require("../beastie-client");
+const beastieFunctions = require("../beastie-functions");
 const secrets = require("../config/secrets");
 
 // array of new followers which need to be acknowledged

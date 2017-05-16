@@ -115,7 +115,7 @@ var commands = {
                                         var minutes = Math.floor(diff / 60) % 60;
                                         var seconds = Math.floor(diff - (hours * 60 * 60) - (minutes * 60));
 
-                                        queue.addMessage( channel, "teamTALIMA has been LIVE for: " + hours + " hours " + minutes + " minutes " + seconds + " seconds. rawr");
+                                        queue.addMessage( channel, secrets.broadcaster.username + " has been LIVE for: " + hours + " hours " + minutes + " minutes " + seconds + " seconds. rawr");
                                     }
                                 });
                             }

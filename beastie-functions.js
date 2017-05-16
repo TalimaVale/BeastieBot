@@ -1,6 +1,6 @@
 // TTsBeastie custom functions
 
-
+const secrets = require("./config/secrets");
 
 /**
  * CUSTOM TTsBEASTIE FUNCTIONS
@@ -24,10 +24,12 @@ module.exports.getArrayElement =    function(array){
                                     }
 
 module.exports.queryTwitchAPI =     function(queryUrl){
-                                        url: "https://api.twitch.tv/kraken/" + queryUrl,
-                                        headers: {
-                                            "Accept": "application/vnd.twitchtv.v5+json",
-                                            "Authorization": "OAuth " + secrets.broadcaster.password,
-                                            "Client-ID": secrets.clientId
-                                        }
+                                        return {
+                                            url: "https://api.twitch.tv/kraken/" + queryUrl,
+                                            headers: {
+                                                "Accept": "application/vnd.twitchtv.v5+json",
+                                                "Authorization": "OAuth " + secrets.broadcaster.password,
+                                                "Client-ID": secrets.clientId
+                                            }
+                                        };
                                     }
