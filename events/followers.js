@@ -48,11 +48,20 @@ function checkFollows(id){
     beastie.api(beastieFunctions.queryTwitchAPI(
         "channels/" + id + "/follows/"
     ), function(err, res, body) {
+        if(err) {
+            console.error("There was a problem querying the Twitch API for follows:");
+            console.error(err);
+        }
         if(!err){
+            if (body.follows == null || "error" in body) {
+                console.warn("There was no follows array returned in the Twitch API response. :/");
+                if(body.error) console.error(body.error + ": " + body.message);
+                return;
+            }
             if (latestFollow == "#") {
                 // for BeastieBot startup
                 latestFollow = body.follows[0].user.display_name;
-            } else{
+            } else {
                 // check for new follows
                 for( let i = 0; i < body.follows.length; i++){
                     if(body.follows[i].user.display_name != latestFollow){
@@ -65,8 +74,8 @@ function checkFollows(id){
                         break;
                     }
                 }
-            // error with api call, reset variables
-            latestFollow = body.follows[0].user.display_name; // update to make sure 'lastestFollow' is in body.follows next call
+                // error with api call, reset variables
+                latestFollow = body.follows[0].user.display_name; // update to make sure 'lastestFollow' is in body.follows next call
             }
         }
     });    
