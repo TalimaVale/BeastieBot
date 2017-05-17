@@ -13,7 +13,7 @@ const secrets = require("../config/secrets");
 
 // Command Files
 const clearance = require("./clearance");
-const raid = require("./raids");
+// const raid = require("./raids");
 
 
 // Helper function for responding to the user with a generic/non-interactive reply in the format of "@{username}, {text}".
