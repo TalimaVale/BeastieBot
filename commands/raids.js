@@ -7,10 +7,12 @@ const beastieFunctions = require("../beastie-functions");
 // Chat message queue module
 const queue = require("../message-queue");
 
-// Chat command modules:
-const commands = require("./commands");
+// Command clearance module
 const clearance = require("./clearance");
 
+
+
+// Raid module:
 const raid = {
     // Boolean to represent whether or not we are currently raiding. 
     // True if the broadcaster has called !raidstart, but before 2 minutes after a hosting event fires.
