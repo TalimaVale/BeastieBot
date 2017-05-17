@@ -19,7 +19,6 @@ const secrets = require("./config/secrets");
 
 // Command Files
 const commands = require("./commands/commands");
-const raid = require("./commands/raids");
 
 // Event Files
 const events = require("./events/events");
@@ -49,28 +48,6 @@ const broadcaster = new tmi.client(
 broadcaster.connect();
 
 
-
-/**
- * TTsBEASTIE MESSAGING & COMMANDS
- *
- * Listen for messages, then respond to action, chat, whisper or command
- *
- * name             command                                     trigger
- * HELLO-BEASTIE =  Beastie says 'hello' to user                !hellobeastie
- * HELP-BEASTIE =   Beastie posts list of commands in chat      !helpbeastie
- * RAID-READY =     Viewers join raidTeam                       !raidready
- * RAWR =           Beastie leaves 'rawr' message               !rawr
- * UPTIME =         Beastie posts uptime in chat                !uptime
- *
- * moderator clearance
- * FLUSH-QUEUE =    Beastie empties message queue               !flushqueue
- * RAID-TEAM =      Moderator checks the raid team              !raidteam
- * SHOUTOUT =       Beastie shouts out a twitch channel         !shoutout <username>
- *
- * broadcaster clearance
- * RAID-START =     Broadcaster prepares to raid                !raidstart
- */
-
 beastie.on("message", function(channel, userstate, message, self){
     // get display_name or username of poster
     var username = beastieFunctions.getUsername(userstate);
@@ -82,13 +59,7 @@ beastie.on("message", function(channel, userstate, message, self){
         case "action":
             break;
             
-        case "chat":
-            // if Beastie is raiding
-            if(raid.raidPrep == true && channel != beastie.getChannels()[0]){
-                raid.checkRaidMessage(username);
-                break;
-            }
-            
+        case "chat":            
             if(channel == beastie.getChannels()[0]){
                 // iterate through Beastie's commands
                 for(var command in commands){
@@ -126,7 +97,6 @@ beastie.on("message", function(channel, userstate, message, self){
  * BEASTIE-GREETING =   Beastie "join" event            beastie joins a channel
  * BEASTIE-GOODBYE =    Process "SIGINT" event          called when you Ctrl-C
  * GET-HOSTED =         Broadcaster "hosted" event      user hosts our channel
- * HOSTING =            Broadcaster "hosting" event     broadcaster hosts channel
  * NEW-FOLLOWER =       Tapic "follow" event            user follows our channel
  */
 
@@ -143,12 +113,6 @@ process.on("SIGINT", function(){
 // GET-HOSTED - Beastie automatically thanks and shouts out hosts
 broadcaster.on("hosted", function(channel, username, viewers){
     events.hosted(channel, username, viewers);
-});
-
-// HOSTING - Broadcaster hosts a channel
-beastie.on("hosting", function(channel, target, viewers){
-    console.log("We are hosting another channel :O");
-    events.hosting(channel, target, viewers);
 });
 
 // NEW-FOLLOW - Beastie welcomes new follower and hands out awesomeness
@@ -170,16 +134,10 @@ beastie.on("newFollow", function(follower){
  */
 
 // HYDRATION-REMINDER - Beastie periodically reminds broadcaster to stay hydrated
-setInterval(function(){
-    timers.hydrationReminder();
-}, 1000 * 60 * 28); // 1sec * 60 * 28 = 28min timer
+setInterval(timers.hydrationReminder, 1000 * 60 * 28); // 1sec * 60 * 28 = 28min timer
 
 // QUOTES - Beastie shares a random quote in chat
-setInterval(function(){
-    timers.quote();
-}, 1000 * 60 * 46); // 1sec * 60 * 46 = 46min timer
+setInterval(timers.quote, 1000 * 60 * 46); // 1sec * 60 * 46 = 46min timer
 
 // RULES - Beastie posts the channel rules
-setInterval(function(){
-    timers.rules();
-}, 1000 * 60 * 60); // 1sec * 60 * 60 = 60min timer
+setInterval(timers.rules, 1000 * 60 * 60); // 1sec * 60 * 60 = 60min timer
