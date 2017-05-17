@@ -13,7 +13,7 @@ const secrets = require("../config/secrets");
 
 // Command Files
 const clearance = require("./clearance");
-// const raid = require("./raids");
+const raid = require("./raids");
 
 
 // Helper function for responding to the user with a generic/non-interactive reply in the format of "@{username}, {text}".
@@ -27,26 +27,38 @@ const reply = (text) => clearance.viewer((channel, userstate) => {
 
 
 /**
- * TTsBEASTIE COMMANDS
+ * Beastie's command chart
  *
- * Beastie's command reponses
+ * viewer commands          description                                  file
+ * ------------------------ -------------------------------------------- -----------------------
+ * !twitter                 Beastie links to Twitter                     /commands/commands.js
+ * !patreon                 Beastie links to Patreon                     /commands/commands.js
+ * !github                  Beastie links to GitHub                      /commands/commands.js
+ * !gitlab                  Beastie links to GitLab                      /commands/commands.js
+ * !discord                 Beastie links to Discord                     /commands/commands.js
+ * !instagram               Beastie links to Instagram                   /commands/commands.js
+ * !youtube                 Beastie links to YouTube                     /commands/commands.js
+ * !teamsite                Beastie links to Team Site                   /commands/commands.js
+ * !teamwall                Beastie links to Team Wall                   /commands/commands.js
+ *                                                                       
+ * !goodbyebeastie          Beastie says 'goodbye' to user               /commands/commands.js
+ * !hellobeastie            Beastie says 'hello' to user                 /commands/commands.js
+ * !helpbeastie             Beastie posts list of commands in chat       /commands/commands.js
+ * !pet                     Viewer /me pets Beastie                      /commands/commands.js
+ * !raidready               Viewers join raidTeam                        /commands/commands.js
+ * !rawr                    Beastie leaves 'rawr' message                /commands/raids.js
+ * !uptime                  Beastie posts uptime in chat                 /commands/commands.js
  *
- * name                 command                                     trigger
- * GOODBYE-BEASTIE =    Beastie says 'goodbye' to user              !goodbyebeastie
- * HELLO-BEASTIE =      Beastie says 'hello' to user                !hellobeastie
- * HELP-BEASTIE =       Beastie posts list of commands in chat      !helpbeastie
- * PET =                Viewer /me pets Beastie                     !pet
- * RAID-READY =         Viewers join raidTeam                       !raidready
- * RAWR =               Beastie leaves 'rawr' message               !rawr
- * UPTIME =             Beastie posts uptime in chat                !uptime
+ * moderator commands       description                                  file
+ * ------------------------ -------------------------------------------- -----------------------
+ * !flushqueue              Beastie empties message queue                /commands/commands.js
+ * !raidteam                Moderator checks the raid team               /commands/raids.js
+ * !shoutout <username>     Beastie shouts out a twitch channel          /commands/commands.js
  *
- * moderator clearance
- * FLUSH-QUEUE =    Beastie empties message queue               !flushqueue
- * RAID-TEAM =      Moderator checks the raid team              !raidteam
- * SHOUTOUT =       Beastie shouts out a twitch channel         !shoutout <username>
+ * broadcaster commands     description                                  file
+ * ------------------------ -------------------------------------------- -----------------------
+ * !raidstart               Broadcaster prepares to raid                 /commands/raids.js
  *
- * broadcaster clearance
- * RAID-START =     Broadcaster prepares to raid                !raidstart
  */
 
 var commands = {
@@ -99,19 +111,6 @@ var commands = {
                             queue.addMessage( channel, "/me purrs while " + username + " pets his head OhMyDog");
                         }),
     
-    // // RAID-READY - Viewers use command to join the raidTeam
-    // "raidready":    clearance.viewer(
-    //                     function(channel, userstate){
-    //                         var username = beastieFunctions.getUsername(userstate);
-    //                         if( raid.raidPrep == true && !raid.raidTeam.includes(username)){
-    //                             raid.raidTeam.push(username);
-    //                             queue.addMessage(channel, username + " is ready to raid!");
-    //                         } else if( raid.raidPrep == true){
-    //                             queue.addWhisper(username, "You are already in the raid team.")
-    //                         } else {
-    //                             queue.addMessage(channel, username + "we're not raiding yet.");
-    //                         }
-    //                     }),
 
     // RAWR - Beastie says 'rawr' in chat
     "rawr":         clearance.viewer(
@@ -154,33 +153,18 @@ var commands = {
                             queue.flushQueue(channel, "I emptied my message queue.");
                         }),
     
-    // // RAID-TEAM - 
-    // "raidteam":   clearance.moderator(
-    //                     function(channel){
-    //                         if(raid.raidPrep){
-    //                             queue.addMessage(channel, );
-    //                         } else{
-    //                             queue.addMessage(channel, "No active raid team.");
-    //                         }
-    //                     }),
-
     // SHOUTOUT - Beastie shouts out a friendly channel
     "shoutout":     clearance.moderator(
                         function(channel, userstate, message){
                             queue.addMessage(channel, "Shoutout to our friend " + message.slice("!shoutout ".length) + "!! Check out their awesome channel: https://twitch.tv/" + message.slice("!shoutout ".length) + "!");
                         }),
     
-    
-    
     /*** BROADCASTER COMMANDS ***/
     
-    // RAID-START - 
-    // "raidstart":     clearance.broadcaster(
-    //                     function(channel, userstate){
-    //                         raid.raidPrep = true;
-    //                         queue.addMessage(channel, "The teamTALIMA RAID IS ABOUT TO BEGIN!!! We have started a raid team. Use !raidready to join and receive bonus raid awesomeness!");
-                            
-    //                     })
-}
+    // ...
+};
+
+// Assigns all of the raid.commands to 
+Object.assign(commands, raid.commands);
 
 module.exports = commands;

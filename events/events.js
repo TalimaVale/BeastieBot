@@ -5,10 +5,7 @@
 // Libraries and Utilities
 const queue = require("../message-queue");
 
-// Command Files
-// const raid = require("../commands/raids");
-
-// Command Files
+// Event files
 const host = require("./hosts");
 
 // Setup Files
@@ -41,7 +38,7 @@ module.exports.join = function(channel, username, self){
             queue.addMessage( channel, "Hello everybody! :D I have awoken! Welcome back to " + channel.slice(1) + "'s channel!");
         }
     }
-}
+};
 
 // GOODBYE - Beastie says goodbye when his node.js process ends
 module.exports.part = function(){
@@ -57,7 +54,7 @@ module.exports.part = function(){
         }
         process.exit();
     }, 1000); // 1sec OR TRY .5secs * number of hosters + 1 = (500 * host.ourHosts.length + 1)
-}
+};
 
 // GET-HOSTED - Beastie automatically thanks and shouts out hosts
 module.exports.hosted = function(channel, username, viewers){
@@ -66,32 +63,10 @@ module.exports.hosted = function(channel, username, viewers){
         host.ourHosts.push([username, viewers]);
         console.log(host.ourHosts);
     }
-}
-
-// // HOSTING - Broadcaster hosts a channel
-// module.exports.hosting = function(channel, target, viewers){
-//     beastie.say(channel, "Time to raid! :D rawr");
-//     beastie.join(target);
-//     console.log("BEASTIE has joined another channel: " + beastie.getChannels()[1]);
-    
-//     console.log("BEASTIE is waiting 2 minutes for the raid.");
-//     // Beastie is raiding another chat room
-//     setTimeout(function(){
-//         beastie.part(beastie.getChannels()[1]);
-//         console.log("BEASTIE has left the building!");
-        
-//         beastie.say(beastie.getChannels()[0], "Great raid team! :D You just made the whole team more awesome!");
-//         console.log("Our raidBonus is: " + raid.raidBonus);
-//         beastie.say(beastie.getChannels()[0], "!bonusall " + raid.raidBonus);
-//         console.log("BEASTIE has handed out " + raid.raidBonus + " points of awesomeness for the successful raid!");
-        
-//         //raid.raidBonus = 0;
-//         console.log("BEASTIE has reset the raidBonus: " + raid.raidBonus);
-//     }, 1000 * 60 * 2); // 1sec * 60 * 2 = 2min timer
-// }
+};
 
 // NEW-FOLLOWER - Beastie welcomes new follower and hands out Revlo points
 module.exports.newFollow = function(follower){
     console.log("We have a new follower! " + follower);
     beastie.say(beastie.getChannels()[0], "Welcome to the team " + follower + "! :D");
-}
+};
