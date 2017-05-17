@@ -83,11 +83,11 @@ beastie.on("message", function(channel, userstate, message, self){
             break;
             
         case "chat":
-            // if Beastie is raiding
-            if(raid.raidPrep == true && channel != beastie.getChannels()[0]){
-                raid.checkRaidMessage(username);
-                break;
-            }
+            // // if Beastie is raiding
+            // if(raid.raidPrep == true && channel != beastie.getChannels()[0]){
+            //     raid.checkRaidMessage(username);
+            //     break;
+            // }
             
             if(channel == beastie.getChannels()[0]){
                 // iterate through Beastie's commands
