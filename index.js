@@ -145,11 +145,11 @@ broadcaster.on("hosted", function(channel, username, viewers){
     events.hosted(channel, username, viewers);
 });
 
-// HOSTING - Broadcaster hosts a channel
-beastie.on("hosting", function(channel, target, viewers){
-    console.log("We are hosting another channel :O");
-    events.hosting(channel, target, viewers);
-});
+// // HOSTING - Broadcaster hosts a channel
+// beastie.on("hosting", function(channel, target, viewers){
+//     console.log("We are hosting another channel :O");
+//     events.hosting(channel, target, viewers);
+// });
 
 // NEW-FOLLOW - Beastie welcomes new follower and hands out awesomeness
 beastie.on("newFollow", function(follower){

@@ -99,19 +99,19 @@ var commands = {
                             queue.addMessage( channel, "/me purrs while " + username + " pets his head OhMyDog");
                         }),
     
-    // RAID-READY - Viewers use command to join the raidTeam
-    "raidready":    clearance.viewer(
-                        function(channel, userstate){
-                            var username = beastieFunctions.getUsername(userstate);
-                            if( raid.raidPrep == true && !raid.raidTeam.includes(username)){
-                                raid.raidTeam.push(username);
-                                queue.addMessage(channel, username + " is ready to raid!");
-                            } else if( raid.raidPrep == true){
-                                queue.addWhisper(username, "You are already in the raid team.")
-                            } else {
-                                queue.addMessage(channel, username + "we're not raiding yet.");
-                            }
-                        }),
+    // // RAID-READY - Viewers use command to join the raidTeam
+    // "raidready":    clearance.viewer(
+    //                     function(channel, userstate){
+    //                         var username = beastieFunctions.getUsername(userstate);
+    //                         if( raid.raidPrep == true && !raid.raidTeam.includes(username)){
+    //                             raid.raidTeam.push(username);
+    //                             queue.addMessage(channel, username + " is ready to raid!");
+    //                         } else if( raid.raidPrep == true){
+    //                             queue.addWhisper(username, "You are already in the raid team.")
+    //                         } else {
+    //                             queue.addMessage(channel, username + "we're not raiding yet.");
+    //                         }
+    //                     }),
 
     // RAWR - Beastie says 'rawr' in chat
     "rawr":         clearance.viewer(
@@ -154,15 +154,15 @@ var commands = {
                             queue.flushQueue(channel, "I emptied my message queue.");
                         }),
     
-    // RAID-TEAM - Moderator checks the status of current raidTeam
-    "raidteam":   clearance.moderator(
-                        function(channel){
-                            if(raid.raidPrep){
-                                queue.addMessage(channel, raid.raidTeam.length + " teammates are prepared to raid! Use !raidready to join the raid team and receive bonus raid awesomeness!");
-                            } else{
-                                queue.addMessage(channel, "No active raid team.");
-                            }
-                        }),
+    // // RAID-TEAM - 
+    // "raidteam":   clearance.moderator(
+    //                     function(channel){
+    //                         if(raid.raidPrep){
+    //                             queue.addMessage(channel, );
+    //                         } else{
+    //                             queue.addMessage(channel, "No active raid team.");
+    //                         }
+    //                     }),
 
     // SHOUTOUT - Beastie shouts out a friendly channel
     "shoutout":     clearance.moderator(
@@ -174,13 +174,13 @@ var commands = {
     
     /*** BROADCASTER COMMANDS ***/
     
-    // RAID-START - Broadcaster prepares to raid and starts a raidTeam
-    "raidstart":     clearance.broadcaster(
-                        function(channel, userstate){
-                            raid.raidPrep = true;
-                            queue.addMessage(channel, "The teamTALIMA RAID IS ABOUT TO BEGIN!!! We have started a raid team. Use !raidready to join and receive bonus raid awesomeness!");
+    // RAID-START - 
+    // "raidstart":     clearance.broadcaster(
+    //                     function(channel, userstate){
+    //                         raid.raidPrep = true;
+    //                         queue.addMessage(channel, "The teamTALIMA RAID IS ABOUT TO BEGIN!!! We have started a raid team. Use !raidready to join and receive bonus raid awesomeness!");
                             
-                        })
+    //                     })
 }
 
 module.exports = commands;
