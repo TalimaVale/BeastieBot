@@ -15,7 +15,6 @@ const clearance = require("./clearance");
 // Raid module:
 const raid = {
     // Boolean to represent whether or not we are currently raiding. 
-    // True if the broadcaster has called !raidstart, but before 2 minutes after a hosting event fires.
     raiding: false,
 
     // Array of teammates who committed to participating in the raid in exchange for bonus awesomeness.
