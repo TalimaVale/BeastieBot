@@ -172,7 +172,7 @@ beastie.on("newFollow", function(follower){
 // HYDRATION-REMINDER - Beastie periodically reminds broadcaster to stay hydrated
 setInterval(function(){
     timers.hydrationReminder();
-}, 1000 * 60 * 1); // 1sec * 60 * 28 = 28min timer
+}, 1000 * 60 * 28); // 1sec * 60 * 28 = 28min timer
 
 // QUOTES - Beastie shares a random quote in chat
 setInterval(function(){
