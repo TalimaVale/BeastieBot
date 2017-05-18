@@ -34,5 +34,54 @@ How to 'git clone' the repo, install node, install npm dependencies, configure s
 How to download BeastieBot, setup bot channel, configure secrets.js, launch bot (see wiki for how to permanently launch bot)
 
 
+### Debian Systems
+
+#### Install
+```
+git clone https://github.com/teamTALIMA/BeastieBot
+sudo apt-get install nodejs
+sudo apt-get install npm
+cd BeastieBot
+npm install lodash
+npm install tmi.js
+```
+
+#### Setup
+```
+cp config/secrets-example.js config/secrets.js
+nano config/secrets.js
+```
+
+#### Run
+```
+nodejs index.js
+```
+
+#### Troubleshooting
+> SyntaxError: Block-scoped declarations 
+
+Nodejs is out of date
+```
+sudo npm cache clean -f
+sudo npm install -g n
+sudo n stable
+sudo rm -f /usr/bin/nodejs
+sudo ln -s /usr/local/n/versions/node/7.10.0/bin/node /usr/bin/nodejs
+```
+Check version:
+```
+nodejs -v
+v7.10.0
+```
+
+
+
+
+
+
+
+
+
+
 ## License
 GNU GPLv3
