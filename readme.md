@@ -42,8 +42,7 @@ git clone https://github.com/teamTALIMA/BeastieBot
 sudo apt-get install nodejs
 sudo apt-get install npm
 cd BeastieBot
-npm install lodash
-npm install tmi.js
+npm install 
 ```
 
 #### Setup
@@ -86,9 +85,7 @@ Open command prompt and change to your development folder
 cd <yourdevdir>\ 
 git clone https://github.com/teamTALIMA/BeastieBot 
 cd BeastieBot 
-npm install lodash
-npm install tmi.js
-
+npm install
 ```
 
 #### Setup
