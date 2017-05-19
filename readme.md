@@ -93,7 +93,7 @@ npm install tmi.js
 
 #### Setup
 ```
-copy config\sercrets-example.js config\secrets.js
+copy config\secrets-example.js config\secrets.js
 notepad config\secrets.js
 
 ```
