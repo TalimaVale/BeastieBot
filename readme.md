@@ -1,8 +1,19 @@
-## teamTALIMA's Beastie Bot
+# teamTALIMA's Beastie Bot
 <sup>*teamTALIMA Project &mdash; [Developed LIVE on twitch.tv/teamTALIMA](https://www.twitch.tv/teamtalima)*</sup>
 
 A bot for Twitch (IRC) chatrooms and Discord servers.
 Developed with Node.js and the npm dependencies 'lodash' and 'tmi.js'.
+
+
+* [BeastieBot Features](#beastiebot-features)
+* [Upcoming Features](#upcoming-features)
+* [Dependencies](#dependencies)
+* [Install and Configuration](#install-and-configuration)
+   - [Debian](#debian)
+   - [Windows](#windows)
+* [License](#license)
+
+
 
 
 ## BeastieBot Features
@@ -26,79 +37,78 @@ These features are soon to be developed, either on stream or merged from collabo
 - **Revlo Integration**
 
 
-## Setup for Collaborators
-How to 'git clone' the repo, install node, install npm dependencies, configure secrets.js
+## Dependencies
+* Nodejs: ^7.10:  https://nodejs.org
+* lodash: ^4.17.4 : https://lodash.com/
+* tmi.js: ^1.1.2 : https://docs.tmijs.org/
 
 
-## Install & Run
-How to download BeastieBot, setup bot channel, configure secrets.js, launch bot (see wiki for how to permanently launch bot)
+## Install and Configuration
 note: current install and setup is aimed towards contributors. The wiki will provide high level instructions for end users.
 
 ### Debian 
 
 #### Install
-```
-git clone https://github.com/teamTALIMA/BeastieBot
-sudo apt-get install nodejs
-sudo apt-get install npm
-cd BeastieBot
-npm install 
-```
+```git clone https://github.com/teamTALIMA/BeastieBot```
+
+```sudo apt-get install nodejs```
+
+```sudo apt-get install npm```
+
+```cd BeastieBot```
+
+```npm install```
 
 #### Setup
-```
-cp config/secrets-example.js config/secrets.js
-nano config/secrets.js
-```
+```cp config/secrets-example.js config/secrets.js```
+
+```nano config/secrets.js```
 
 #### Run
-```
-nodejs index.js
-```
+```nodejs index.js```
 
 #### Troubleshooting
 > SyntaxError: Block-scoped declarations 
 
 Nodejs is out of date
-```
-sudo npm cache clean -f
-sudo npm install -g n
-sudo n stable
-sudo rm -f /usr/bin/nodejs
-sudo ln -s /usr/local/n/versions/node/7.10.0/bin/node /usr/bin/nodejs
-```
+```sudo npm cache clean -f```
+
+```sudo npm install -g n```
+
+```sudo n stable```
+
+```sudo rm -f /usr/bin/nodejs```
+
+```sudo ln -s /usr/local/n/versions/node/7.10.0/bin/node /usr/bin/nodejs```
+
 Check version:
-```
-nodejs -v
-v7.10.0
-```
+```nodejs -v```
+```v7.10.0```
 
 ### Windows 
 
 #### Install
 Download and install Nodejs
-```
-https://nodejs.org/en/
-```
+
+``` https://nodejs.org/en/ ```
+
 Open command prompt and change to your development folder
-```
-cd <yourdevdir>\ 
-git clone https://github.com/teamTALIMA/BeastieBot 
-cd BeastieBot 
-npm install
-```
+
+```cd <yourdevdir>\```
+
+```git clone https://github.com/teamTALIMA/BeastieBot ```
+
+```cd BeastieBot ```
+
+```npm install```
 
 #### Setup
-```
-copy config\secrets-example.js config\secrets.js
-notepad config\secrets.js
+```copy config\secrets-example.js config\secrets.js```
 
-```
+```notepad config\secrets.js```
 
 #### Run
-```
-node index.js
-```
+```node index.js```
 
 
 ## License
