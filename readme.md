@@ -32,9 +32,9 @@ How to 'git clone' the repo, install node, install npm dependencies, configure s
 
 ## Install & Run
 How to download BeastieBot, setup bot channel, configure secrets.js, launch bot (see wiki for how to permanently launch bot)
+note: current install and setup is aimed towards contributors. The wiki will provide high level instructions for end users.
 
-
-### Debian Systems
+### Debian 
 
 #### Install
 ```
@@ -74,13 +74,34 @@ nodejs -v
 v7.10.0
 ```
 
+### Windows 
 
+#### Install
+Download and install Nodejs
+```
+https://nodejs.org/en/
+```
+Open command prompt and change to your development folder
+```
+cd <yourdevdir>\ 
+git clone https://github.com/teamTALIMA/BeastieBot 
+cd BeastieBot 
+npm install lodash
+npm install tmi.js
 
+```
 
+#### Setup
+```
+copy config\sercrets-example.js config\secrets.js
+notepad config\secrets.js
 
+```
 
-
-
+#### Run
+```
+node index.js
+```
 
 
 ## License
