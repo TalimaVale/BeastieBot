@@ -1,17 +1,18 @@
 # teamTALIMA's Beastie Bot
 <sup>*teamTALIMA Project &mdash; [Developed LIVE on twitch.tv/teamTALIMA](https://www.twitch.tv/teamtalima)*</sup>
 
-A bot for Twitch (IRC) chatrooms and Discord servers.
-Developed with Node.js and the npm dependencies 'lodash' and 'tmi.js'.
+> A bot for Twitch (IRC) chatrooms and Discord servers. Developed with Node.js and the npm dependencies 'lodash' and 'tmi.js'.
+> 
 
 
-* [BeastieBot Features](#beastiebot-features)
-* [Upcoming Features](#upcoming-features)
-* [Dependencies](#dependencies)
-* [Install and Configuration](#install-and-configuration)
-   - [Debian](#debian)
-   - [Windows](#windows)
-* [License](#license)
+ ## Content
+ * [BeastieBot Features](#beastiebot-features) 
+ * [Upcoming Features](#upcoming-features) 
+ * [Dependencies](#dependencies) 
+ * [Install and Configuration](#install-and-configuration) 
+   - [Debian](#debian) 
+   - [Windows](#windows) 
+ * [License](#license) 
 
 
 
@@ -38,7 +39,7 @@ These features are soon to be developed, either on stream or merged from collabo
 
 
 ## Dependencies
-* Nodejs: ^7.10:  https://nodejs.org
+* Node.js: ^7.10:  https://nodejs.org
 * lodash: ^4.17.4 : https://lodash.com/
 * tmi.js: ^1.1.2 : https://docs.tmijs.org/
 
@@ -71,6 +72,7 @@ note: current install and setup is aimed towards contributors. The wiki will pro
 > SyntaxError: Block-scoped declarations 
 
 Nodejs is out of date
+
 ```sudo npm cache clean -f```
 
 ```sudo npm install -g n```
@@ -82,19 +84,19 @@ Nodejs is out of date
 ```sudo ln -s /usr/local/n/versions/node/7.10.0/bin/node /usr/bin/nodejs```
 
 Check version:
+
 ```nodejs -v```
+
 ```v7.10.0```
 
 ### Windows 
 
 #### Install
-Download and install Nodejs
+Download and install Node.js
 
 ``` https://nodejs.org/en/ ```
 
 Open command prompt and change to your development folder
-
-```cd <yourdevdir>\```
 
 ```git clone https://github.com/teamTALIMA/BeastieBot ```
 
