@@ -78,9 +78,12 @@ const raid = {
 };
 
 // when we see a chat message in any channel...
-beastie.on("chat", (channel, userstate, message, self) => {
+beastie.on("message", (channel, userstate, message, self) => {
     // then definitely ignore that message if it is from beastie...
     if(self) return;
+
+    // if the message is neither a chat message nor an action message (/me <message>), then return:
+    if(userstate["message-type"] != "chat" && userstate["message-type"] != "action") return;
 
     // ... and if we are currently raiding and the chat message is likely not from the broadcaster's channel:
     if(raid.raiding && channel != beastie.getChannels()[0]){
