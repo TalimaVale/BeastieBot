@@ -118,8 +118,8 @@ beastie.on("hosting", (channel, target, viewers) => {
         beastie.say(channel, "Great raid team! :D You just made the whole team more awesome!");
         beastie.say(channel, "!bonusall " + raid.team_verified.length);
 
-        // debug log how many raiders that joined the raid team and actually raided:
-        console.debug("[raid] raid complete -- " + raid.team_verified.length + " of " + raid.team.length);
+        // log how many raiders that joined the raid team and actually raided:
+        console.log("[raid] raid complete -- " + raid.team_verified.length + " of " + raid.team.length);
 
         // clear and reset the raiding state:
         raid.team = [];
