@@ -14,6 +14,7 @@ const secrets = require("../config/secrets");
 // Command Files
 const clearance = require("./clearance");
 const raid = require("./raids");
+const custom = require("./custom");
 
 
 // Helper function for responding to the user with a generic/non-interactive reply in the format of "@{username}, {text}".
@@ -50,6 +51,9 @@ const reply = (text) => clearance.viewer((channel, userstate) => {
  */
 
 var commands = {
+    
+    
+    /*** Viewer Commands ***/
 
     // LINKS - Beastie says to the user a link in the format of "@{username}, {url}"
     // TODO: Maybe this should be refactored so all of the links are configured in another file for other streamers who run Beastie.
@@ -143,9 +147,8 @@ var commands = {
                                 });
                             }
                         }),
-    
-    
-    
+                   
+
     /*** MODERATOR COMMANDS ***/
     
     // FLUSH-QUEUE - Flush Beastie's message queue of all messages
@@ -180,7 +183,52 @@ var commands = {
                             raid.raidPrep = true;
                             queue.addMessage(channel, "The teamTALIMA RAID IS ABOUT TO BEGIN!!! We have started a raid team. Use !raidready to join and receive bonus raid awesomeness!");
                             
+                        }),
+    
+    // COMMANDS - Beastie adds, edits, or deletes custom commands
+    "commands":     clearance.viewer(
+                        function(channel, userstate, message){
+                            // bring message into scope
+                            var str = message;
+                            // send to custom.js comHandler
+                            custom.comHandler(str);
+                           // queue.addMessage(channel, "");
+                        }),
+                        
+    // dummy command for testing functions
+    "testcommand": clearance.broadcaster(
+                        function(channel, userstate, message){
+                            // DO STUFF
                         })
+
+                        
+   
+};
+
+// *** Build object of custom commands and attach it to commands object. I seriously need to seriously refactor this for serious-SoG *** //
+var jsonObj = require("./custom.json");
+var names = _.map(jsonObj.commands, "name");
+var customCom  = {};
+var name;
+
+// iterate names and messages by index[i]. 
+for(var i=0;i < names.length;i++){
+    name = names[i];
+    //build array of custom commands
+    customCom[name.replace("!","")] = clearance.broadcaster(
+            // function in addMessage parameter fetches message of custom command when clearance.broadcaster() is called.
+        function(channel,userstate,message){queue.addMessage(channel,getM(message));});
+    // attach custom commands to commands 
+    _.merge(commands, customCom);
+    }
+ 
+
+function getM(message)
+{
+    // TODO - fetch message of !{customCommand} being passed in message from custom.json. Return {message:"custom commands message"}
+    return "The command :" + message + ": was called";
 }
+// **************************************************************************************************************************************** //
+
 
 module.exports = commands;
