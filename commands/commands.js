@@ -161,7 +161,7 @@ var commands = {
     
     /*** BROADCASTER COMMANDS ***/
         // COMMANDS - Beastie adds, edits, or deletes custom commands
-    "commands":     clearance.viewer(
+    "commands":     clearance.broadcaster(
                         function(channel, userstate, message){
                             // bring message into scope
                             var str = message;
@@ -173,7 +173,8 @@ var commands = {
     // dummy command for testing functions
     "testcommand": clearance.broadcaster(
                         function(channel, userstate, message){
-                            // DO STUFF
+                            //DO STUFF
+                            
                         })
     // ...
 };
@@ -191,9 +192,7 @@ for(var i=0;i < names.length;i++){
     customCom[name.replace("!","")] = clearance.broadcaster(
             // function in addMessage parameter fetches message of custom command when clearance.broadcaster() is called.
         function(channel,userstate,message){queue.addMessage(channel,getM(message));});
-    // attach custom commands to commands 
-    _.merge(commands, customCom);
-    }
+ }
  
 
 function getM(message)
@@ -206,6 +205,8 @@ function getM(message)
 
 // Assigns all of the raid.commands to 
 Object.assign(commands, raid.commands);
+ // merge custom commands to commands 
+_.merge(commands, customCom);
 
 module.exports = commands;
 
