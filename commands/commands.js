@@ -14,7 +14,7 @@ const secrets = require("../config/secrets");
 // Command Files
 const clearance = require("./clearance");
 const raid = require("./raids");
-
+const custom = require("./custom");
 
 // Helper function for responding to the user with a generic/non-interactive reply in the format of "@{username}, {text}".
 // Usage: 
@@ -160,9 +160,49 @@ var commands = {
                         }),
     
     /*** BROADCASTER COMMANDS ***/
-    
+        // COMMANDS - Beastie adds, edits, or deletes custom commands
+    "commands":     clearance.viewer(
+                        function(channel, userstate, message){
+                            // bring message into scope
+                            var str = message;
+                            // send to custom.js comHandler
+                            custom.comHandler(str);
+                           // queue.addMessage(channel, "");
+                        }),
+                        
+    // dummy command for testing functions
+    "testcommand": clearance.broadcaster(
+                        function(channel, userstate, message){
+                            // DO STUFF
+                        })
     // ...
 };
+
+// *** Build object of custom commands and attach it to commands object. I seriously need to seriously refactor this for serious-SoG *** //
+var jsonObj = require("./custom.json");
+var names = _.map(jsonObj.commands, "name");
+var customCom  = {};
+var name;
+
+// iterate names and messages by index[i]. 
+for(var i=0;i < names.length;i++){
+    name = names[i];
+    //build array of custom commands
+    customCom[name.replace("!","")] = clearance.broadcaster(
+            // function in addMessage parameter fetches message of custom command when clearance.broadcaster() is called.
+        function(channel,userstate,message){queue.addMessage(channel,getM(message));});
+    // attach custom commands to commands 
+    _.merge(commands, customCom);
+    }
+ 
+
+function getM(message)
+{
+    // TODO - fetch message of !{customCommand} being passed in message from custom.json. Return {message:"custom commands message"}
+    return "The command :" + message + ": was called";
+}
+// **************************************************************************************************************************************** //
+
 
 // Assigns all of the raid.commands to 
 Object.assign(commands, raid.commands);
