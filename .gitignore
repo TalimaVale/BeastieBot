@@ -2,13 +2,11 @@
 
 /[Nn]ode_modules/
 
-
-
 # Secret Files
 
 config/secrets.js
 ideas.js
 ideas2.js
-/nbproject/private/
-nbproject/project.properties
-nbproject/project.xml
+<<<<<<< HEAD
+/nbproject/*
+>>>>>>> upstream/master
