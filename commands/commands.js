@@ -197,17 +197,16 @@ function comObjBuilder(){
     contents = fs.readFileSync("./commands/custom.json");
     jsonObj = JSON.parse(contents);
     names = _.map(jsonObj.commands, "name");
-// iterate names and messages by index[i]. 
-for(var i=0;i < names.length;i++){
-    name = names[i];
-    //build array of custom commands
-    customCom[name.replace("!","")] = clearance.viewer(
+        // iterate names and messages by index[i]. 
+        for(var i=0;i < names.length;i++){
+            name = names[i];
+            //build array of custom commands
+            customCom[name.replace("!","")] = clearance.viewer(
             // function in addMessage parameter fetches message of custom command when clearance.broadcaster() is called.
-        function(channel,userstate,message){queue.addMessage(channel,getM(message));});
- }
+            function(channel,userstate,message){queue.addMessage(channel,getM(message));});
+        }
     _.merge(commands, customCom);
-    console.log(commands);
-}
+ }
  
  // fetches the message for a custom command
 function getM(command)
@@ -226,9 +225,7 @@ function mergeCommands()
     Object.assign(commands, raid.commands);
     // merge custom commands to commands 
     _.merge(commands, customCom);
- console.log();
 }
-
 
 // make magic happen
 comObjBuilder();
