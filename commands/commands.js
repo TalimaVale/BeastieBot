@@ -197,7 +197,10 @@ for(var i=0;i < names.length;i++){
  
 function getM(command)
 {
-}
+    console.log(jsonObj.commands);
+    var index = _.findIndex(jsonObj.commands, function(c) { return c.name == command; });
+    return jsonObj.commands[index].message;
+    }
 // **************************************************************************************************************************************** //
 
 
