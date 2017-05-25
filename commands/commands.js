@@ -66,7 +66,8 @@ const reply = (text) => clearance.viewer((channel, userstate) => {
  * broadcaster commands         description                                  file
  * ------------------------     -------------------------------------------- -----------------------
  * !raidstart                   Broadcaster prepares to raid                 /commands/raids.js
- * !commands add !command msg   adds custom command named [!command] with message [msg]
+ * !commands add|edit|delete    add|edit|delete a custom command             /commands/custom.js
+ * !testCommand                 For dev testing
  *
  */
 
