@@ -1,5 +1,6 @@
 var jsonObj = require("./custom.json");
 const fs = require("fs");
+const _ = require("lodash");
 
 // message is passed from "commands" in commands.js
 // sends the command and message to the
@@ -36,7 +37,13 @@ function addCommand(command,message){
         
 function editCommand(command, message){};
 
-function deleteCommand(command, message){};
+function deleteCommand(command, message){
+    
+    var index = _.findIndex(jsonObj.commands, function(c) { return c.name == command; });
+    jsonObj.commands.splice(index, 1);
+    console.log(jsonObj);
+    fs.writeFileSync("./commands/custom.json", JSON.stringify(jsonObj), (err) => {if (err){ console.log(err);}});
+};
 
 module.exports.comHandler = comHandler;
 
