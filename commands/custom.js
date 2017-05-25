@@ -31,7 +31,7 @@ function addCommand(command,message){
     // command and message are passed from comHandler.
     // push new command and its message to the json object
     jsonObj.commands.push({name:command,message:message});
-    fs.writeFile("./commands/custom.json", JSON.stringify(jsonObj), (err) => {if (err){ console.log(err);}});
+    fs.writeFileSync("./commands/custom.json", JSON.stringify(jsonObj), (err) => {if (err){ console.log(err);}});
 };
         
 function editCommand(command, message){};

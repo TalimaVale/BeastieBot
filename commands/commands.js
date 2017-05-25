@@ -18,10 +18,9 @@ const raid = require("./raids");
 const custom = require("./custom");
 
 // Custom Command vars
-var  contents = fs.readFileSync("./commands/custom.json");
-var jsonObj = JSON.parse(contents);
-var names = _.map(jsonObj.commands, "name");
-console.log(names);
+var contents;
+var jsonObj;
+var names;
 var customCom  = {};
 var name;
 
@@ -177,7 +176,8 @@ var commands = {
                             var str = message;
                             // send to custom.js comHandler
                             custom.comHandler(str);
-                            mergeCommands();                            
+                            // rebuild commands object
+                            comObjBuilder();                           
                            // queue.addMessage(channel, "");
                         }),
                         
@@ -193,42 +193,45 @@ var commands = {
 // *** Build object of custom commands and attach it to commands object. I seriously need to seriously refactor this for serious-SoG *** //
 // TODO - Move this to custom.js
 
-
-
+function comObjBuilder(){
+    contents = fs.readFileSync("./commands/custom.json");
+    jsonObj = JSON.parse(contents);
+    names = _.map(jsonObj.commands, "name");
 // iterate names and messages by index[i]. 
 for(var i=0;i < names.length;i++){
     name = names[i];
-    console.log(name);
     //build array of custom commands
-    customCom[name.replace("!","")] = clearance.broadcaster(
+    customCom[name.replace("!","")] = clearance.viewer(
             // function in addMessage parameter fetches message of custom command when clearance.broadcaster() is called.
         function(channel,userstate,message){queue.addMessage(channel,getM(message));});
  }
+    _.merge(commands, customCom);
+    console.log(commands);
+}
  
  // fetches the message for a custom command
 function getM(command)
 {
- 
-    // grab the index of command
-    var index = _.findIndex(jsonObj.commands, function(c) { return c.name == command; });
-    // return the message at index
-    return jsonObj.commands[index].message;
-    }
+   // grab the index of command
+   var index = _.findIndex(jsonObj.commands, function(c) { return c.name == command; });
+   // return the message at index
+   return jsonObj.commands[index].message;
+}
 // **************************************************************************************************************************************** //
 
 //merges all command objects to commands
-function mergeCommands(){
-        
-    console.log("mergeCommands was called: " + jsonObj);
-// Assigns all of the raid.commands to commands
-Object.assign(commands, raid.commands);
- // merge custom commands to commands 
-_.merge(commands, customCom);
+function mergeCommands()
+{
+    // Assigns all of the raid.commands to commands
+    Object.assign(commands, raid.commands);
+    // merge custom commands to commands 
+    _.merge(commands, customCom);
+ console.log();
 }
 
 
-
 // make magic happen
+comObjBuilder();
 mergeCommands();
 module.exports = commands;
 
