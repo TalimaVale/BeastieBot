@@ -1,3 +1,10 @@
+// TODO 
+// - error handling
+// - refactor to access fs as little as possible.
+// - user feedback
+
+
+
 var jsonObj = require("./custom.json");
 const fs = require("fs");
 const _ = require("lodash");
@@ -32,16 +39,27 @@ function addCommand(command,message){
     // command and message are passed from comHandler.
     // push new command and its message to the json object
     jsonObj.commands.push({name:command,message:message});
+    // overwrite file with jsonObj
     fs.writeFileSync("./commands/custom.json", JSON.stringify(jsonObj), (err) => {if (err){ console.log(err);}});
 };
         
-function editCommand(command, message){};
-
-function deleteCommand(command, message){
-    
+function editCommand(command, message){
+    console.log("editCommand was called");
+    //find index of command name
     var index = _.findIndex(jsonObj.commands, function(c) { return c.name == command; });
+    // remove command object at index
+    jsonObj.commands[index].message = message;
+    fs.writeFileSync("./commands/custom.json", JSON.stringify(jsonObj), (err) => {if (err){ console.log(err);}});
+    
+};
+
+// Deletes custom command
+function deleteCommand(command, message){
+    // command and message are passed from comHandler.
+    // find index of command name
+    var index = _.findIndex(jsonObj.commands, function(c) { return c.name == command; });
+    // remove command object at index
     jsonObj.commands.splice(index, 1);
-    console.log(jsonObj);
     fs.writeFileSync("./commands/custom.json", JSON.stringify(jsonObj), (err) => {if (err){ console.log(err);}});
 };
 
