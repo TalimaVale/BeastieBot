@@ -1,7 +1,7 @@
 // TODO 
 // - error handling
 // - refactor to access fs as little as possible.
-// - user feedback
+// - update status to user
 
 
 
@@ -44,7 +44,6 @@ function addCommand(command,message){
 };
         
 function editCommand(command, message){
-    console.log("editCommand was called");
     //find index of command name
     var index = _.findIndex(jsonObj.commands, function(c) { return c.name == command; });
     // remove command object at index
