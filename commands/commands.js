@@ -180,6 +180,7 @@ var commands = {
 };
 
 // *** Build object of custom commands and attach it to commands object. I seriously need to seriously refactor this for serious-SoG *** //
+// TODO - Move this to custom.js
 var jsonObj = require("./custom.json");
 var names = _.map(jsonObj.commands, "name");
 var customCom  = {};
@@ -194,11 +195,8 @@ for(var i=0;i < names.length;i++){
         function(channel,userstate,message){queue.addMessage(channel,getM(message));});
  }
  
-
-function getM(message)
+function getM(command)
 {
-    // TODO - fetch message of !{customCommand} being passed in message from custom.json. Return {message:"custom commands message"}
-    return "The command :" + message + ": was called";
 }
 // **************************************************************************************************************************************** //
 
