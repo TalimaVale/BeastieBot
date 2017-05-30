@@ -24,6 +24,9 @@ var names;
 var customCom  = {};
 var name;
 
+// strawpoll module
+const poll = require("./strawpoll");
+
 // Helper function for responding to the user with a generic/non-interactive reply in the format of "@{username}, {text}".
 // Usage: 
 // var commands = {
@@ -181,12 +184,17 @@ var commands = {
                             comObjBuilder();                           
                            // queue.addMessage(channel, "");
                         }),
-                        
+                      
+    // dummy command for testing functions
+    "poll": clearance.broadcaster(
+                        function(channel, userstate, message){
+                            poll.pollHandler(message);
+                        }),
+                            
     // dummy command for testing functions
     "testcommand": clearance.broadcaster(
                         function(channel, userstate, message){
                             //DO STUFF
-                            
                         })
     // ...
 };

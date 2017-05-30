@@ -86,8 +86,6 @@ beastie.on("message", function(channel, userstate, message, self){
     }
 });
 
-
-
 /**
  * TTsBEASTIE EVENTS
  *
@@ -118,7 +116,7 @@ broadcaster.on("hosted", function(channel, username, viewers){
 // NEW-FOLLOW - Beastie welcomes new follower and hands out awesomeness
 beastie.on("newFollow", function(follower){
     events.newFollow(follower);
-})
+});
 
 
 

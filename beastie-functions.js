@@ -1,3 +1,4 @@
+
 // TTsBeastie custom functions
 
 const secrets = require("./config/secrets");
@@ -33,3 +34,4 @@ module.exports.queryTwitchAPI =     function(queryUrl){
                                             }
                                         };
                                     }
+                                    
