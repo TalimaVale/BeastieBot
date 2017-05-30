@@ -2,10 +2,12 @@
 
 
 // Dependencies
-const request = require('request');
+const request = require("request");
+const queue = require("../message-queue");
+const beastie = require("../beastie-client");
 
 //json object
-const jsonObj = require("../json/polls.json");
+var jsonObj = require("../json/polls.json");
 
 const fs = require("fs");
 
@@ -28,8 +30,7 @@ function pollHandler(message)
         for(var i=0, len= arryOptions.length; i < len; i++){
             arryOptions[i] = arryOptions[i].trim();
             }
-         
-        // send title and options to createPoll    
+         // send title and options to createPoll    
         createPoll(title,arryOptions);
         break;
     case "results":
@@ -39,9 +40,7 @@ function pollHandler(message)
 }
  
 function createPoll(title,options){
-
-console.log(title + ": " + options);
-    
+   
 var poll = { title: title, options: options };
 
 request.post({
@@ -53,20 +52,27 @@ request.post({
     function (error, response, body) {
         if (!error && response.statusCode == 200) {
             jsonObj.polls.push({id:body.id});
-            console.log(jsonObj);
+            // overwrite file with jsonObj
             fs.writeFileSync("./json/polls.json", JSON.stringify(jsonObj), (err) => {if (err){ console.log(err);}});
-           // fs.readFileSync("./json/polls.json");
+            //jsonObj = fs.readFileSync("./json/polls.json");
+            
+        }else
+        {
+            console.log("There was an error connecting to strawpoll: " + error);
         }
     }
            
 );
-        
- // overwrite file with jsonObj
-
 }
  
 function getPoll(){
-
-}
+ //get last poll index
+ var pollIds = jsonObj.polls;
+ var pollIdx = pollIds.length-1;
+ //get channel
+ var channel = beastie.getChannels();
+ //return channel message with link to latest poll
+ queue.addMessage(channel[0], "www.strawpoll.me/" + pollIds[pollIdx].id);
+ }
  
 module.exports.pollHandler = pollHandler;
