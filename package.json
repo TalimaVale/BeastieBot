@@ -22,5 +22,7 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "tmi.js": "^1.1.2"
-  }
+  }, "scripts":{
+"start":"node index.js"}
+
 }

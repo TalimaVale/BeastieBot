@@ -10,6 +10,7 @@ const host = require("./hosts");
 
 // Setup Files
 const beastie = require("../beastie-client");
+const constants = require("../config/constants.js");
 
 
 
@@ -26,10 +27,12 @@ const beastie = require("../beastie-client");
  * NEW-FOLLOWER     =   Interval "follow" event,      user follows our channel
  */
 
-// GREETING - Beastie says hello when connecting to chat room
+// GREETING - Beastie says hello when connecting to chat room - Turn on/off in ../config/constants.js
 module.exports.join = function(channel, username, self){
     if(self){
-        // do not leave message when joining other channels
+        
+        if (!constants.AWOKE) return;
+         //do not leave message when joining other channels
         if(channel != beastie.getChannels()[0]) return;
         
         if(channel == "#teamtalima"){
