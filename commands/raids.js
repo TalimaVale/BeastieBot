@@ -21,7 +21,7 @@ const raid = {
     team: [],
 
     // Array of teammates who committed to participating in the raid AND were actually seen participating in the raid.
-    team_verified: [],
+    teamVerified: [],
 
 
     // Object of raid-related commands. See the bottom of /commands/commands.js for its importation.
@@ -66,7 +66,7 @@ const raid = {
                 // clear the raid team:
                 raid.team = [];
                 // clear the verified raiders:
-                raid.team_verified = [];
+                raid.teamVerified = [];
                 // tell everyone that the raid is about to begin and remind them of the benefit of joining the raid team.
                 queue.addMessage(channel, "The teamTALIMA RAID IS ABOUT TO BEGIN!!! We have started a raid team. Use !raidready to join and receive bonus raid awesomeness!");
             } else {
@@ -78,16 +78,19 @@ const raid = {
 };
 
 // when we see a chat message in any channel...
-beastie.on("chat", (channel, userstate, message, self) => {
+beastie.on("message", (channel, userstate, message, self) => {
     // then definitely ignore that message if it is from beastie...
     if(self) return;
+
+    // if the message is neither a chat message nor an action message (/me <message>), then return:
+    if(userstate["message-type"] != "chat" && userstate["message-type"] != "action") return;
 
     // ... and if we are currently raiding and the chat message is likely not from the broadcaster's channel:
     if(raid.raiding && channel != beastie.getChannels()[0]){
         // then if the message is from a raider in our raid team and they previously haven't been verfied as having been seen raided:
-        if(raid.team.includes(userstate.username) && !raid.team_verified.includes(userstate.username)){
+        if(raid.team.includes(userstate.username) && !raid.teamVerified.includes(userstate.username)){
             // then add their name to the array of verified raiders.
-            raid.team_verified.push(userstate.username);
+            raid.teamVerified.push(userstate.username);
         }
     }
 });
@@ -113,14 +116,14 @@ beastie.on("hosting", (channel, target, viewers) => {
         beastie.part(target);
         // and handing out bonus awesomeness equal to the amount of raiders in our raid team that we saw raid the target chat:
         beastie.say(channel, "Great raid team! :D You just made the whole team more awesome!");
-        beastie.say(channel, "!bonusall " + raid.team_verified.length);
+        beastie.say(channel, "!bonusall " + raid.teamVerified.length);
 
-        // debug log how many raiders that joined the raid team and actually raided:
-        console.debug("[raid] raid complete -- " + raid.team_verified.length + " of " + raid.team.length);
+        // log how many raiders that joined the raid team and actually raided:
+        console.log("[raid] raid complete -- " + raid.teamVerified.length + " of " + raid.team.length);
 
         // clear and reset the raiding state:
         raid.team = [];
-        raid.team_verified = [];
+        raid.teamVerified = [];
         raid.raiding = false;
     }, 1000 * 60 * 2); // 1sec * 60 * 2 = 2min timer
 });
