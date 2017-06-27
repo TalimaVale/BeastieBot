@@ -64,7 +64,7 @@ module.exports.rules = function(){
 }
 
 // GAWKBOX - Beastie posts link to GawkBox
-module.exports.rules = function(){
+module.exports.gawkbox = function(){
     beastie.api(beastieFunctions.queryTwitchAPI(
         "streams/" + beastie.broadcasterID
     ), function(err, res, body) {
