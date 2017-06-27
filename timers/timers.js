@@ -24,6 +24,7 @@ const quotes = require("./quotes");
  * HYDRATION-REMINDER = Beastie reminder for a water break  28 minutes
  * QUOTES =             Beastie shares a random quote       46 minutes
  * RULES =              Beastie posts rules in chat         60 minutes
+ * GAWKBOX =            Beastie posts link to GawkBox       40 minutes
  */
 
 // HYDRATION-REMINDER - Beastie periodically reminds broadcaster to stay hydrated
@@ -58,6 +59,18 @@ module.exports.rules = function(){
         // if no err and stream is not offline
         if(!err && body.stream != null){
             queue.addMessage(beastie.getChannels()[0], "THE RULES GO HERE. rawr");
+        }
+    })
+}
+
+// GAWKBOX - Beastie posts link to GawkBox
+module.exports.rules = function(){
+    beastie.api(beastieFunctions.queryTwitchAPI(
+        "streams/" + beastie.broadcasterID
+    ), function(err, res, body) {
+        // if no err and stream is not offline
+        if(!err && body.stream != null){
+            queue.addMessage(beastie.getChannels()[0], "Tip for FREE with GawkBox! https://www.gawkbox.com/teamtalima :D");
         }
     })
 }

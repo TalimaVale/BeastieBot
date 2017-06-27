@@ -131,6 +131,7 @@ beastie.on("newFollow", function(follower){
  * HYDRATION-REMINDER = Beastie reminder for a water break  28 minutes
  * QUOTES =             Beastie shares a random quote       45 minutes
  * RULES =              Beastie posts rules in chat         60 minutes
+ * GAWKBOX =            Beastie posts link to GawkBox       40 minutes
  */
 
 // HYDRATION-REMINDER - Beastie periodically reminds broadcaster to stay hydrated
@@ -140,4 +141,7 @@ setInterval(timers.hydrationReminder, 1000 * 60 * 28); // 1sec * 60 * 28 = 28min
 setInterval(timers.quote, 1000 * 60 * 46); // 1sec * 60 * 46 = 46min timer
 
 // RULES - Beastie posts the channel rules
-setInterval(timers.rules, 1000 * 60 * 60); // 1sec * 60 * 60 = 60min timer
+//setInterval(timers.rules, 1000 * 60 * 60); // 1sec * 60 * 60 = 60min timer
+
+// GAWKBOX - Beastie posts link to GawkBox
+setInterval(timers.gawkbox, 1000 * 60 * 40); // 1sec * 60 * 60 = 60min timer
