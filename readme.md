@@ -70,7 +70,7 @@ These features are soon to be developed, either on stream or merged from collabo
 
 ## Installation
 
-  1. Clone or [Download] the repository and CD into it
+  1. Clone or [Download](https://api.github.com/repos/teamtalima/beastiebot/zipball) the repository and `cd` into it.<br>
     `git clone https://github.com/teamTALIMA/BeastieBot && cd BeastieBot`
   2. Run `npm i` to install Beastie's NPM dependencies
   3. Optionally run `npm link` to add a `beastie` command to your path. *(use `node .` or `node ./src/cli.js` in place of `beastie` in the process below)
