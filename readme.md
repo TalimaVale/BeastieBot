@@ -29,7 +29,7 @@ Some of Beastie's main features include...
       - `!uptime` Tells you how long the stream has been running
       - `!raidready` Joins you into the active chat raid team, if there is one
       - `!loyalty` A hidden command that tells you about the loyalty points
-      - `!<stream info>` Tells you about `<stream info>` &mdash; Configurable by the broadcaster in the settings.ini
+      - `!<stream info>` Tells you about `<stream info>` &mdash; Configurable by the broadcaster in the [settings.ini]
       - `!<custom command trigger>` Tells you about `<custom command trigger>` if it's set up as a custom command
     - For moderators
       - `!shoutout <channel>` Gives a shoutout to an awesome channel
@@ -50,9 +50,9 @@ Some of Beastie's main features include...
       - `!deliberatecrash` A hidden debugging command that deliberately crashes Beastie -- useful for quickly reloading him.
       - `!follows` A hidden comand that tells you how many new followers Beastie has seen since he started up.
   - **Events**
-    - New follows - Welcomes new followers to the team.
-    - Hosts by other channels - Announces that another channel has hosted the broadcaster if their viewer count exceeds settings.ini's `announce.hosted.threshold`
-  - **Custom Timers** - Set of customizable timers which are configurable in the settings.ini
+    - New follows - New followers are welcomed to the stream.
+    - Hosts by other channels - Announces that another channel has hosted the broadcaster if their viewer count exceeds [settings.ini]'s `announce.hosted.threshold`
+  - **Custom Timers** - Set of customizable timers which are configurable in the [settings.ini]
 
 ### Upcoming Features
 
@@ -66,8 +66,7 @@ These features are soon to be developed, either on stream or merged from collabo
 
 ## Prerequisites
 
-  - [Node.js (**Latest**)](https://nodejs.org/en/download/current)
-    - Installation via your [OS's package manager are available](https://nodejs.org/en/download/package-manager/).
+  1. [Node.js (**Latest**)](https://nodejs.org/en/download/current) &mdash; Installation via your [OS's package manager are available](https://nodejs.org/en/download/package-manager/).
 
 ## Installation
 
@@ -90,3 +89,6 @@ Nodejs is out of date, make sure you have the latest version of node installed.
 
 ## License
 GNU GPLv3
+
+
+[settings.ini]: config/settings.ini
