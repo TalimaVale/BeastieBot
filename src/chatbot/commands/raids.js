@@ -83,7 +83,7 @@ module.exports = async (client) => {
                             "Client-ID": _.get(secrets, "webserver.api_access")
                         },
                         body: JSON.stringify({ points: raiders.length })
-                    }).catch(()=>{}));
+                    }).catch(()=>{});
                 } else if(userstate.root === true) {
                     await client.say(channel, "Raid stopped.");
                 }
