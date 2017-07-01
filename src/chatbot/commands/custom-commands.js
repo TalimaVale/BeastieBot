@@ -122,4 +122,15 @@ module.exports = async (client) => {
                 await client.say(channel, `Usage: !commands delete <trigger>`);
             }
         });
+    
+    client
+        .command("commands custom", { unshift: true, hidden: true })
+        .clearance("moderator")
+        .action(async (channel, userstate, message) => {
+            const list = client.commands
+                .filter(command => command.context.custom)
+                .map(command => `!${command.name}`)
+                .join(", ");
+            await client.say(channel, `Custom commands: ${_.isEmpty(list) ? "none" : list}`);
+        });
 };
