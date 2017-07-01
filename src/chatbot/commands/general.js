@@ -9,7 +9,20 @@ module.exports = async (client) => {
         .command("helpbeastie")
         .alias("beastiecommands", "help", "commands")
         .description("Shows helpful information regarding my commands.")
-        .action(async (channel, userstate) => {
+        .action(async (channel, userstate, message) => {
+            const [command, trigger] = message.split(" ");
+            if(["!help", "!helpbeastie"].includes(command) && trigger != null && !_.isEmpty(trigger)){
+                const command = client.findCommand(trigger);
+                if(command){
+                    const desc = _.get(command, "_description", "No description is available for that command.");
+                    await client.say(channel, `${_.displayName(userstate)}, !${trigger}: ${desc}`);
+                } else {
+                    await client.say(channel, `${_.displayName(userstate)}, !${trigger} is not a command that I recognize.`);
+                }
+                return;
+            }
+
+
             const list = (await Promise.all(
                     client.commands.map(command => new Promise(async resolve => {
                         resolve(await command._clearance(channel, userstate) ? command : null);
@@ -50,6 +63,7 @@ module.exports = async (client) => {
 
     client
         .command("pet")
+        .description("Pets me on the head.")
         .alias("petbeastie")
         .clearance("viewer")
         .action(async (channel, userstate) => {
@@ -58,6 +72,7 @@ module.exports = async (client) => {
 
     client
         .command("shoutout")
+        .description("Gives a shoutout to an awesome channel.")
         .clearance("moderator")
         .action(async (channel, userstate, messages) => {
             

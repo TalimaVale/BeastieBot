@@ -66,6 +66,7 @@ module.exports = async (client) => {
 
     client
         .command("follows", { hidden: true })
+        .description("Prints how many new followers I've seen since I started up")
         .clearance("broadcaster")
         .action(async (channel, userstate) => {
             await client.say(channel, `${_.displayName(userstate)}, ${follows.length} new follows since startup`);

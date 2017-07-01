@@ -8,6 +8,7 @@ module.exports = async (client) => {
 
     client
         .command("strawpoll").alias("poll")
+        .description(`Creates a strawpoll. Usage: !strawpoll <poll title>|<answer 1>|<answer N...>`)
         .clearance("moderator")
         .action(async (channel, userstate, message) => {
             const [command, ...params] = message.split(" ");

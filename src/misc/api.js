@@ -157,7 +157,7 @@ const api = module.exports = {
             const command = Object.setPrototypeOf({
                 name, aliases: [],
                 context,
-                _description: "",
+                _description: null,
                 _clearance: async (channel, userstate) => true,
                 _action: async (channel) => await client.say(channel, `Error: the command !${command.name} has no action associated.`),
             }, {

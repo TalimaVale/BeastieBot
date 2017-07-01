@@ -24,6 +24,7 @@ module.exports = async (client) => {
             } else {
                 client
                     .command(trigger, { custom: true })
+                    .description(`Replies with a message about ${trigger}`)
                     .action(async (channel) => {
                         await client.say(channel, text);
                     });
@@ -54,6 +55,7 @@ module.exports = async (client) => {
                 } else {
                     client
                         .command(trigger, { custom: true })
+                        .description(`Replies with a message about ${trigger}`)
                         .action(async (channel) => {
                             await client.say(channel, text);
                         });

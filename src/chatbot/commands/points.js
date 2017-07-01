@@ -52,6 +52,7 @@ module.exports = async (client) => {
 
     client
         .command(loyalty.points.toLowerCase())
+        .description(`Tells you how much ${loyalty.points} you have.`)
         .alias("points")
         .clearance("viewer")
         .action(async (channel, userstate, message) => {
@@ -82,6 +83,7 @@ module.exports = async (client) => {
 
     client
         .command("bonusall")
+        .description(`Gives everyone bonus ${loyalty.points}.`)
         .clearance("broadcaster")
         .action(async (channel, userstate, message) => {
             let [bonus] = message.split(" ").slice(1);
@@ -101,6 +103,7 @@ module.exports = async (client) => {
 
     client
         .command("bonus")
+        .description(`Gives a specific user bonus ${loyalty.points}`)
         .clearance("broadcaster")
         .action(async (channel, userstate, message) => {
             let [name, bonus] = message.split(" ").slice(1);
@@ -142,6 +145,7 @@ module.exports = async (client) => {
 
     client
         .command("loyalty", { hidden: true })
+        .description(`Prints out a description for what ${loyalty.points} are for.`)
         .alias("info")
         .clearance("viewer")
         .action(async (channel, userstate) => {

@@ -13,6 +13,7 @@ module.exports = async (client) => {
 
     client
         .command("raidready")
+        .description(`Joins you into the active chat raid team, if there is one, to make the whole team more awesome.`)
         .clearance("viewer")
         .action(async (channel, userstate) => {
             const {username} = userstate;
@@ -33,6 +34,7 @@ module.exports = async (client) => {
     
     client
         .command("raidteam")
+        .description(`Prints out how many teammates have joined the raid team & explains how to join.`)
         .clearance("moderator")
         .action(async (channel, userstate) => {
             let displayName = _.displayName(userstate);
@@ -45,6 +47,7 @@ module.exports = async (client) => {
 
     client
         .command("raidstart")
+        .description(`Starts the process for a chat raid and prints out how to join.`)
         .clearance("broadcaster")
         .action(async (channel, userstate) => {
             if(!raiding){
@@ -61,6 +64,7 @@ module.exports = async (client) => {
 
     client
         .command("raidstop")
+        .description(`Stops an active raid.`)
         .clearance("broadcaster")
         .action(async (channel, userstate) => {
             if(raiding){
