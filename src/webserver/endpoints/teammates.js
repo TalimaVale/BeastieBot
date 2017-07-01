@@ -104,7 +104,7 @@ Object.assign(module, {
                 const teammate = _.find(teammateArray, { id });
                 if(teammate){
                     _.assign(teammate, _.defaults(
-                        _.pick(data, ["name", "id", "points", "earned"]),
+                        _.pick(data, ["name", "points", "earned"]),
                         teammate
                     ));
                     shouldSave = true;
@@ -117,14 +117,25 @@ Object.assign(module, {
         app.use("/api/teammates/:id/bonus", {
             async create(data, params){
                 const {id} = params;
-                const teammate = _.find(teammateArray, { id });
+                let teammate = _.find(teammateArray, { id });
+                const points = parseInt(data.points, 10)|0;
                 if(teammate){
-                    const points = parseInt(data.points, 10)|0;
                     teammate.points += points;
                     if(data.type === "earned") 
                         teammate.earned += points;
                     shouldSave = true;
                     return teammate;
+                } else {
+                    const user = await api.user(id).catch(()=>{});
+                    if(!!user && user._id == id){
+                        teammateArray.push({ 
+                            name: user.name, 
+                            id, points,
+                            earned: data.type === "earned" ? points : 0
+                        });
+                        shouldSave = true;
+                        return _.find({ id });
+                    }
                 }
                 return Promise.reject(new errors.NotFound(`Teammate "${id}" could not be found`));
             }
