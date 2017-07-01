@@ -7,8 +7,11 @@
 # Secret Files
 **/secrets.*
 
-# Logs
-logs/
+# Bot Data
+/data/
+/logs/
+/pids/
+
 
 # Development Environments
 nbproject/
