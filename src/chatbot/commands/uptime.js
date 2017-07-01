@@ -6,7 +6,7 @@ module.exports = async (client) => {
 
     client
         .command("uptime")
-        .description("Checks how long the stream has been running.")
+        .description("Tells you how long the stream has been running.")
         .clearance("viewer")
         .action(async (channel, userstate) => {
             let problem = false;

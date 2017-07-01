@@ -57,7 +57,7 @@ module.exports = async (client) => {
 
     client
         .command("timers")
-        .description("Prints out all current timers & controls them if called in the format of: !timers <disable|enable> <timer>")
+        .description("Tells you all current timers & controls them if called in the format of: !timers <disable|enable> <timer>")
         .alias("timer")
         .clearance("broadcaster")
         .action(async (channel, userstate, message) => {

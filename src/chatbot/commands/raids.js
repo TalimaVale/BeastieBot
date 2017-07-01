@@ -1,3 +1,6 @@
+const settings = require("../../misc/settings");
+const secrets = require("../../misc/secrets");
+
 const qs = require("querystring");
 const _ = require("../../misc/utils");
 const api = require("../../misc/api");
@@ -13,7 +16,7 @@ module.exports = async (client) => {
 
     client
         .command("raidready")
-        .description(`Joins you into the active chat raid team, if there is one, to make the whole team more awesome.`)
+        .description(`Joins you into the active chat raid team, if there is one.`)
         .clearance("viewer")
         .action(async (channel, userstate) => {
             const {username} = userstate;
@@ -34,7 +37,7 @@ module.exports = async (client) => {
     
     client
         .command("raidteam")
-        .description(`Prints out how many teammates have joined the raid team & explains how to join.`)
+        .description(`Tells you how many teammates have joined the raid team & explains how to join.`)
         .clearance("moderator")
         .action(async (channel, userstate) => {
             let displayName = _.displayName(userstate);
@@ -47,7 +50,7 @@ module.exports = async (client) => {
 
     client
         .command("raidstart")
-        .description(`Starts the process for a chat raid and prints out how to join.`)
+        .description(`Starts the process for a chat raid and tells everyone how to join.`)
         .clearance("broadcaster")
         .action(async (channel, userstate) => {
             if(!raiding){
@@ -72,8 +75,15 @@ module.exports = async (client) => {
                 watching = false;
 
                 if(raidteam.length > 0){
-                    await client.say(channel, "Great raid team! :D You just made everyone more awesome!");
-                    // todo: bonus awesomeness
+                    await client.say(channel, `Great raid team! :D You just made everyone more awesome! Everyone has been given +${raiders.length} bonus ${_.get(settings, "loyalty.points", "points")}.`);
+
+                    await api.fetch("http://127.0.0.1:8080/api/teammates/bonus", {
+                        method: "post",
+                        headers: {
+                            "Client-ID": _.get(secrets, "webserver.api_access")
+                        },
+                        body: JSON.stringify({ points: raiders.length })
+                    }).catch(()=>{}));
                 } else if(userstate.root === true) {
                     await client.say(channel, "Raid stopped.");
                 }
@@ -114,8 +124,15 @@ module.exports = async (client) => {
             raiding = false;
             await client.part(target);
             client.removeListener("message", listener);
-            await client.say(channel, `Great raid team! :D You just made everyone more awesome!`);
-            // todo: bonus awesomeness
+            await client.say(channel, `Great raid team! :D You just made everyone more awesome! Everyone has been given +${raiders.length} bonus ${_.get(settings, "loyalty.points", "points")}.`);
+
+            await api.fetch("http://127.0.0.1:8080/api/teammates/bonus", {
+                method: "post",
+                headers: {
+                    "Client-ID": _.get(secrets, "webserver.api_access")
+                },
+                body: JSON.stringify({ points: raiders.length })
+            }).catch(()=>{}));
 
             watching = false;
             raidteam = [];
