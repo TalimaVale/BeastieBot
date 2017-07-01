@@ -53,6 +53,9 @@ Some of Beastie's main features include...
     - New follows - New followers are welcomed to the stream.
     - Hosts by other channels - Announces that another channel has hosted the broadcaster if their viewer count exceeds [settings.ini]'s `announce.hosted.threshold`
   - **Custom Timers** - Set of customizable timers which are configurable in the [settings.ini]
+  - **Support for importing points from Revlo**
+    - Simply move your `<username>_points.csv` file that revlo gave you into the `data/` directory in the root of the BeastieBot project and rename it to `points.csv`. Voila!
+      - *Note: `data/` may need to be created if you've never run Beastie before*
 
 ### Upcoming Features
 
@@ -66,20 +69,20 @@ These features are soon to be developed, either on stream or merged from collabo
 
 ## Prerequisites
 
-  1. [Node.js (**Latest**)](https://nodejs.org/en/download/current) &mdash; Installation via your [OS's package manager are available](https://nodejs.org/en/download/package-manager/).
+  1. [Node.js (**Latest**)](https://nodejs.org/en/download/current) &mdash; Installation via your [OS's package manager are also available](https://nodejs.org/en/download/package-manager/).
 
 ## Installation
 
   1. Clone or [Download](https://api.github.com/repos/teamtalima/beastiebot/zipball) the repository and `cd` into it.<br>
     `git clone https://github.com/teamTALIMA/BeastieBot && cd BeastieBot`
   2. Run `npm i` to install Beastie's NPM dependencies
-  3. Optionally run `npm link` to add a `beastie` command to your path. *(use `node .` or `node ./src/cli.js` in place of `beastie` in the process below)
+  3. Optionally run `npm link` to add a `beastie` command to your path. *(use `node .` or `node ./src/cli.js` in place of `beastie` in the process below)*
   4. Run `beastie init` and provide your Client-ID, Broadcaster's OAuth and Bot's OAuth per the interactive prompts.
-    - [*"Where can I get a Client-ID?"*](https://www.twitch.tv/kraken/oauth2/clients/new)
-    - [*"Where do I get an OAuth Token for my accounts?"*](https://twitchapps.com/tmi/)
+      - [*"Where can I get a Client-ID?"*](https://www.twitch.tv/kraken/oauth2/clients/new)
+      - [*"Where do I get an OAuth Token for my accounts?"*](https://twitchapps.com/tmi/)
   5. Run `beastie start` to start beastie *(or use `node ./src/monitor` to start the monitor directly)*
   6. You should be done! Go test him out!
-  7. Optionally run `beastie status` to check its status or run `beastie stop` to stop any running instance of Beastie's monitor.
+  7. Optionally run `beastie status` to check the status or run `beastie stop` to stop any running instance of Beastie's monitor.
 
 ### Troubleshooting
 
