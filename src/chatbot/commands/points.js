@@ -145,7 +145,7 @@ module.exports = async (client) => {
 
     client
         .command("loyalty", { hidden: true })
-        .description(`Prints out a description for what ${loyalty.points} are for.`)
+        .description(`Tells you what ${loyalty.points} are for.`)
         .alias("info")
         .clearance("viewer")
         .action(async (channel, userstate) => {

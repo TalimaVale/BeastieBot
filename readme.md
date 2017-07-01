@@ -20,7 +20,7 @@ Some of Beastie's main features include...
 
   - **Commands**
     - For viewers
-      - `!helpbeastie` Prints all available commands
+      - `!helpbeastie` Tells you all of the available commands
       - `!hellobeastie` Says hello to you
       - `!goodbyebeastie` Says goodbye to you
       - `!rawr` Rawrs in the chat
@@ -28,7 +28,7 @@ Some of Beastie's main features include...
       - `!awesomeness` Tells you how much awesomeness you have
       - `!uptime` Tells you how long the stream has been running
       - `!raidready` Joins you into the active chat raid team, if there is one
-      - `!loyalty` A hidden command that tells you about the loyalty points
+      - `!loyalty` or `!info` A hidden command that tells you what awesomeness is for
       - `!<stream info>` Tells you about `<stream info>` &mdash; Configurable by the broadcaster in the [settings.ini]
       - `!<custom command trigger>` Tells you about `<custom command trigger>` if it's set up as a custom command
     - For moderators
@@ -59,13 +59,7 @@ Some of Beastie's main features include...
 
 ### Upcoming Features
 
-These features are soon to be developed, either on stream or merged from collaborating teammate branch
-
-  - **Twitch Chat Logs** - A system to record/log all twitch chat from the broadcaster's chatroom
-  - **Twitch Chat Moderation** - Beastie moderation for purges, timeouts, and bans based off a customizable blacklist
-  - **Beastie Treats** - BeastieBot's personal currency, used to unlock special commands, perks, and surprises
-  - **Discord Support** - All of the great things beastie can do in the Twitch chat room, he will do on your Discord server.
-
+[See the todo.md](todo.md)
 
 ## Prerequisites
 

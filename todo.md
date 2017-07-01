@@ -1,0 +1,31 @@
+# Todo
+
+    - [ ] Improve how ini and csv files are accessed and manipulated
+    - [ ] Twitch API caching
+    - [ ] Improved utilities file
+        - [ ] Improved node-ipc abstraction
+            - [ ] Promise-based RPC
+    - [ ] Improved command definition
+        - [ ] Enable and disable commands or command groups
+    - [ ] Points accrued while watching stream need a grace period like Revlo's ~40 minutes
+        - [ ] The logic for determining who's watch the stream should be expanded beyond merely consulting Twitch's chatters api, to incorporate who we see sending messages in the chat as well as those who we see join the room via tmi.js's "join" event.
+    - [ ] Namespace based settings.ini access
+    - [ ] Logging using winston
+    - [ ] Site GUI & Logic
+        - [ ] OAuth Login
+            - [ ] Twitch
+            - [ ] Twitter
+            - [ ] YouTube
+            - [ ] Discord
+        - [ ] Rewards & associated commands
+        - [ ] Leaderboard & associated commands
+        - [ ] Overlay
+        - [ ] Contests & associated commands
+        - [ ] Giveaways & associated commands
+        - [ ] Community Goals & associated commands
+    - [ ] Discord integration
+    - [ ] Important files like the points need to be backed up at the end of stream
+    - [ ] Moderation capabilties
+        - [ ] Bad words
+        - [ ] Link authorization
+    - [ ] Beastie treats
