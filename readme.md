@@ -69,7 +69,7 @@ These features are soon to be developed, either on stream or merged from collabo
 
 ## Prerequisites
 
-  1. [Node.js (**Latest**)](https://nodejs.org/en/download/current) &mdash; Installation via your [OS's package manager are also available](https://nodejs.org/en/download/package-manager/).
+  1. [Node.js (**Latest**)](https://nodejs.org/en/download/current) &mdash; Instructions for installing via your [OS's package manager are also available](https://nodejs.org/en/download/package-manager/).
 
 ## Installation
 
