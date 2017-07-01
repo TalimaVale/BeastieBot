@@ -94,4 +94,7 @@ Nodejs is out of date, make sure you have the latest version of node installed.
 GNU GPLv3
 
 
+-----------------
+![](screenshots/monitor_startup.gif)
+
 [settings.ini]: config/settings.ini
