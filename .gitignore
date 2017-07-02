@@ -5,7 +5,7 @@
 
 
 # Secret Files
-**/secrets.*
+config/secrets.*
 
 # Bot Data
 /data/
