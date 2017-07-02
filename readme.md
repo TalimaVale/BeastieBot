@@ -68,13 +68,13 @@ Some of Beastie's main features include...
 ## Installation
 
   1. Clone or [Download](https://api.github.com/repos/teamtalima/beastiebot/zipball) the repository and `cd` into it.<br>
-    `git clone https://github.com/teamTALIMA/BeastieBot && cd BeastieBot`
+    `git clone https://github.com/teamTALIMA/BeastieBot`<br>`cd BeastieBot`
   2. Run `npm i` to install Beastie's NPM dependencies
-  3. Optionally run `npm link` to add a `beastie` command to your path. *(use `node .` or `node ./src/cli.js` in place of `beastie` in the process below)*
-  4. Run `beastie init` and provide your Client-ID, Broadcaster's OAuth and Bot's OAuth per the interactive prompts.
+  3. Optionally run `npm link` to add a `beastie` command to your path. *(If you don't want to run `npm link`, just use `node .` or `node ./src/cli.js` in place of `beastie` in the instructions below.)*
+  4. Run `beastie init` and provide your Client-ID, Broadcaster's OAuth and Bot's OAuth per the interactive prompts you will be presented.
       - [*"Where can I get a Client-ID?"*](https://www.twitch.tv/kraken/oauth2/clients/new)
       - [*"Where do I get an OAuth Token for my accounts?"*](https://twitchapps.com/tmi/)
-  5. Run `beastie start` to start beastie *(or use `node ./src/monitor` to start the monitor directly)*
+  5. Run `beastie start` to start beastie. *(Or use `node ./src/monitor` to start the monitor directly.)*
   6. You should be done! Go test him out!
   7. Optionally run `beastie status` to check the status or run `beastie stop` to stop any running instance of Beastie's monitor.
 
@@ -89,6 +89,9 @@ GNU GPLv3
 
 
 -----------------
+
 ![](screenshots/monitor_startup.gif)
+> GIF: *Running the monitor directly, then a `!hello` :arrow_right: `!help` :arrow_right: `!deliberatecrash` and then finally a `!rawr` being executed in the chat room by the broadcaster.*
 
 [settings.ini]: config/settings.ini
+
