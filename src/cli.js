@@ -12,13 +12,11 @@ const {spawn} = require("child_process");
 const _ = require("./misc/utils");
 const chalk = require("chalk");
 const fetch = require("node-fetch");
-const ini = require("ini");
 const rt = require("rand-token");
 const inquirer = require("inquirer");
 const pkg = require("../package.json");
 const program = require("commander");
 
-const secretsPath = path.resolve(__dirname, "../config/secrets.ini");
 const beastiePidPath = path.resolve(__dirname, "../beastie.pid");
 
 _.exitHandler(async () => {});
@@ -28,8 +26,7 @@ program.version(`v${pkg.version}`);
 
 program.command("init").description("configure the secrets.ini").action(async () => {
     let secrets = {};
-    let secretsIni = await _.readFile(secretsPath, "utf8").catch(() => "");
-    _.assign(secrets, ini.decode(secretsIni));
+    _.assign(secrets, await _.ini.read("config/secrets"));
 
     const Accept = "application/vnd.twitchtv.v5+json";
 
@@ -107,7 +104,6 @@ program.command("init").description("configure the secrets.ini").action(async ()
             });
             if(body && !body.error && body.token && body.token.valid){
                 _.set(secrets, "broadcaster.id", body.token.user_id);
-                // _.set(secrets, "broadcaster.name", body.token.user_name);
                 return chalk.green(`  API check was successful. Hello ${
                     chalk.magenta(await display_name(body.token.user_id).catch(()=>{})||body.token.user_name)
                 }`);
@@ -140,7 +136,6 @@ program.command("init").description("configure the secrets.ini").action(async ()
             });
             if(body && !body.error && body.token && body.token.valid){
                 _.set(secrets, "beastie.id", body.token.user_id);
-                // _.set(secrets, "beastie.name", body.token.user_name);
                 return chalk.green(`  API check was successful. Rawr ${
                     chalk.magenta(await display_name(body.token.user_id).catch(()=>{})||body.token.user_name)
                 }`);
@@ -156,19 +151,18 @@ program.command("init").description("configure the secrets.ini").action(async ()
 
     // _.set(secrets, "webserver.overlay_token", _.get(secrets, "webserver.overlay_token", rt.generate(32)));
     // _.set(secrets, "webserver.jwt_secret", _.get(secrets, "webserver.jwt_secret", rt.generate(32)));
-    _.set(secrets, "webserver.api_access", _.get(secrets, "webserver.api_access", rt.generate(32)));
+    _.set(secrets, "webserver.client_id", _.get(secrets, "webserver.client_id", rt.generate(32)));
 
     console.log(chalk.green("Done acquiring secrets."));
     
-    secretsIni = `; ${ (new Date).toJSON() }\n;\n; Be careful not to show this file on stream!${ "\n;".repeat(120) }\n; (whew)\n\n${ ini.encode(secrets) }`;
-    await _.mkdirp(path.dirname(secretsPath));
-    await _.writeFile(secretsPath, secretsIni);
+    const contents = `; ${ (new Date).toJSON() }\n;\n; Be careful not to show this file on stream!${ "\n;".repeat(120) }\n; (whew)\n\n${ _.ini.encode(secrets) }`;
+    await _.ini.write("config/secrets", contents);
 
-    console.log(chalk.gray("Saved to ") + chalk.dim(secretsPath));
+    console.log(chalk.gray("Saved to ") + chalk.dim(path.resolve(_.ini.root, "config/secrets.ini")));
 });
 
 program.command("status").description("output the status of beastie").action(async () => {
-    if(await _.running("beastie-monitor")){
+    if(await _.pid.check("beastie-monitor")){
         console.log("Beastie is running");
     } else {
         console.log("Beastie is not running");
@@ -176,7 +170,7 @@ program.command("status").description("output the status of beastie").action(asy
 });
 
 program.command("start").description("").action(async () => {
-    if(await _.running("beastie-monitor")){
+    if(await _.pid.check("beastie-monitor")){
         console.log("Beastie is already running.");
     } else {
         console.log("Starting Beatsie...");
@@ -194,14 +188,14 @@ program.command("start").description("").action(async () => {
             return _.exit(1);
         } finally {
             console.log("Started!");
-            await _.savePid("beastie-monitor", beastieMonitor.pid);
+            await _.pid.write("beastie-monitor", beastieMonitor.pid);
         }
     }
 });
 
 program.command("stop").description("").action(async () => {
     let beastieMonitor;
-    if(await _.running("beastie-monitor")) {
+    if(await _.pid.check("beastie-monitor")) {
         console.log("Stopping Beastie...");
         try {
             await _.stopProcess("beastie-monitor");

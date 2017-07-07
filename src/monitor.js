@@ -7,7 +7,7 @@ const forever = require("forever-monitor");
     _.exitHandler(async () => {
         await Promise.race([
             startup, 
-            _.delay(6*1000).unref() 
+            _.sleep(6*1000).unref() 
         ]);
         await Promise.all([
             _.stopProcess("beastie-webserver"),
@@ -15,15 +15,15 @@ const forever = require("forever-monitor");
         ]);
         console.log("[beastie-monitor] goodbye");
     });
-    if(await _.running("beastie-monitor")){
+    if(await _.pid.check("beastie-monitor")){
         console.error("[beastie-monitor] already running!");
         return _.exit(1);
     }
     const beastieMonitor = await _.lockProcess("beastie-monitor");
     console.log("[beastie-monitor] rawr world");
 
-    if(await _.running("beastie-webserver"))
-        await _.killProcess("beastie-webserver");
+    if(await _.pid.check("beastie-webserver"))
+        await _.pid.kill("beastie-webserver");
     beastieWebserver = await _.startForeverProcess("./webserver", {
         cwd: __dirname
     }, "beastie-webserver");
@@ -34,8 +34,8 @@ const forever = require("forever-monitor");
         console.error("[beastie-monitor] detected [beastie-webserver] exited with code " + code);
     });
 
-    if(await _.running("beastie-chatbot"))
-        await _.killProcess("beastie-chatbot");
+    if(await _.pid.check("beastie-chatbot"))
+        await _.pid.kill("beastie-chatbot");
     beastieChatbot = await _.startForeverProcess("./chatbot", {
         cwd: __dirname
     }, "beastie-chatbot");

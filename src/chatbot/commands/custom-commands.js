@@ -1,22 +1,18 @@
 const settings = require("../../misc/settings");
 const _ = require("../../misc/utils");
 
-const path = require("path");
-const dataDir = path.resolve(__dirname, "../../../data/");
-const customCommandsCsv = path.resolve(dataDir, "custom-commands.csv");
-
 module.exports = async (client) => {
     const broadcaster = await require("../broadcaster");
 
     const commands = [];
 
     setImmediate(async () => {
-        await _.mkdirp(dataDir);
-        const table = await _.csv.parse(await _.readFile(customCommandsCsv).catch(()=>""), { 
+        const data = await _.csv.read("data/custom-commands", {
+            mkdir: true,
             columns: ["trigger", "text"],
             from: 2
-        });
-        for(const {trigger, text} of table){
+        }).catch(()=>[]);
+       for(const {trigger, text} of data){
             let command = client.findCommand(trigger);
             if(command != null){
                 console.log("[beastie-chatbot] [%s custom-commands] ignoring custom command \"%s\"; command already present", chalk.yellow("warn"), trigger);
@@ -34,8 +30,7 @@ module.exports = async (client) => {
     });
 
     async function save(){
-        await _.mkdirp(dataDir);
-        await _.writeFile(customCommandsCsv, await _.csv.stringify(commands));
+        await _.csv.write("data/custom-commands", commands);
     }
 
     client

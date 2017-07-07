@@ -16,7 +16,7 @@ module.exports = async (client) => {
             });
 
             if(stream == null){
-                await client.say(channel, `${_.displayName(broadcaster)} is not streaming right now${problem?"*":"."}`);
+                await client.say(channel, `${broadcaster.display_name} is not streaming right now${problem?"*":"."}`);
             } else {
                 const started = new Date(_.get(stream, "created_at", Date.now()));
                 const now = Date.now();
@@ -31,7 +31,7 @@ module.exports = async (client) => {
                     minutes === 0 ? "" : `${minutes} minutes `.slice(0,-1-(minutes === 1)),
                     seconds === 0 ? "" : `${seconds} seconds `.slice(0,-1-(seconds === 1))
                 ];
-                await client.say(channel, `${_.displayName(stream.channel)} has been streaming ${stream.game} for ${duration.join(" ").trim() || "null seconds"}. rawr`);
+                await client.say(channel, `${stream.channel.display_name} has been streaming ${stream.game} for ${duration.join(" ").trim() || "null seconds"}. rawr`);
             }
         });
 };

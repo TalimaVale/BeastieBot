@@ -9,7 +9,7 @@ module.exports = async (client) => {
             .description(`Replies with a message about ${command}`)
             .alias("stream-" + command)
             .action(async (channel, userstate) => {
-                await client.say(channel, `${_.displayName(userstate)}, ${response}`);
+                await client.say(channel, `${userstate.display_name}, ${response}`);
             });
     });
 };

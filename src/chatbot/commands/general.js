@@ -15,9 +15,9 @@ module.exports = async (client) => {
                 const command = client.findCommand(trigger);
                 if(command){
                     const desc = _.get(command, "_description", "No description is available for that command.");
-                    await client.say(channel, `${_.displayName(userstate)}, !${trigger}: ${desc}`);
+                    await client.say(channel, `${userstate.display_name}, !${trigger}: ${desc}`);
                 } else {
-                    await client.say(channel, `${_.displayName(userstate)}, !${trigger} is not a command that I recognize.`);
+                    await client.say(channel, `${userstate.display_name}, !${trigger} is not a command that I recognize.`);
                 }
                 return;
             }
@@ -41,7 +41,7 @@ module.exports = async (client) => {
         .description("Says hello to you!")
         .clearance("viewer")
         .action(async (channel, userstate) => {
-            await client.say(channel, `Hello ${_.displayName(userstate)}! rawr`);
+            await client.say(channel, `Hello ${userstate.display_name}! rawr`);
         });
     
     client
@@ -50,7 +50,7 @@ module.exports = async (client) => {
         .description("Says goodbye to you!")
         .clearance("viewer")
         .action(async (channel, userstate) => {
-            await client.say(channel, `Goodbye ${_.displayName(userstate)}! See you next stream :)`);
+            await client.say(channel, `Goodbye ${userstate.display_name}! See you next stream :)`);
         });
 
     client
@@ -67,7 +67,7 @@ module.exports = async (client) => {
         .alias("petbeastie")
         .clearance("viewer")
         .action(async (channel, userstate) => {
-            await client.action(channel, `purrs while ${_.displayName(userstate)} pets his head OhMyDog`);
+            await client.action(channel, `purrs while ${userstate.display_name} pets his head OhMyDog`);
         });
 
     client
@@ -79,18 +79,15 @@ module.exports = async (client) => {
             let [command, name] = messages.split(" ");
 
             if(name == null || _.isEmpty(name)){
-                return await client.say(channel, `${_.displayName(userstate)} please call the command in the format of "!shoutout <channel>", where <channel> is a valid twitch channel name.`);
+                return await client.say(channel, `${userstate.display_name} please call the command in the format of "!shoutout <channel>", where <channel> is a valid twitch channel name.`);
             }
 
-            const {users} = await api.login(name).catch(() => {
-                return { users: [] };
-            });
-            const friend = users[0];
+            const friend = await api.twitch({ name: name.toLowerCase() });
 
             if(!friend){
-                await client.say(channel, `${_.displayName(userstate)} \"${name}\" does not appear to be a channel :(`)
+                await client.say(channel, `${userstate.display_name} \"${name}\" does not appear to be a channel :/`)
             } else {
-                await client.say(channel, `Shoutout to our friend ${_.displayName(friend)}!! Check out their awesome channel: https://www.twitch.tv/${friend.name == _.displayName(friend).toLowerCase() ? _.displayName(friend) : friend.name} !`);
+                await client.say(channel, `Shoutout to our friend ${friend.display_name}!! Check out their awesome channel: https://www.twitch.tv/${friend.name == friend.display_name.toLowerCase() ? friend.display_name : friend.name} !`);
             }
         });
 };

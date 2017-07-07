@@ -32,9 +32,6 @@ module.exports = async (client) => {
                 const bonus = loyalty.rate_earn;
                 let {error, teammates} = await api.fetch("http://127.0.0.1:8080/api/teammates/bonus", {
                     method: "post",
-                    headers: {
-                        "Client-ID": _.get(secrets, "webserver.api_access")
-                    },
                     body: JSON.stringify({ type: "earned", points: bonus })
                 }).catch(()=>({ error: true }));
 
@@ -43,10 +40,10 @@ module.exports = async (client) => {
                 else
                     console.log(`[beastie-chatbot] ${chalk.red(`failed to give teammates their earned ${loyalty.points}`)}`);
 
-                await _.delay(loyalty.rate_interval * 60 * 1000);
+                await _.sleep(loyalty.rate_interval * 60 * 1000);
                 continue;
             }
-            await _.delay(6 * 60 * 1000);
+            await _.sleep(15 * 60 * 1000);
         }
     })();
 
@@ -56,27 +53,20 @@ module.exports = async (client) => {
         .alias("points")
         .clearance("viewer")
         .action(async (channel, userstate, message) => {
-            let id = _.get(userstate, "user-id");
-            if(_.isModerator(userstate)){
-                const [name] = message.split(" ").slice(1);
+            let target = userstate, detailed = false;
+            if(api.clearance.moderator(channel, userstate)){
+                const [name, earned] = message.split(" ").slice(1);
                 if(!_.isEmpty(name)){
-                    const {users} = await api.login(name);
-                    if(_.isEmpty(users)){
+                    target = await api.twitch({ name: name.toLowerCase() });
+                    detailed = api.clearance.super_moderator(channel, userstate) && earned === "+earned";
+                    if(_.isEmpty(target)){
                         return await client.say(channel, `Sorry, "${name}" is not a Twitch user, and therefore doesn't have any ${loyalty.points}.`);
-                    } else {
-                        id = users[0]._id;
-                        userstate = users[0];
                     }
                 }
             }
-            let {points, error} = await api.fetch(`http://127.0.0.1:8080/api/teammates/${id}`, {
-                headers: {
-                    "Client-ID": _.get(secrets, "webserver.api_access")
-                }
-            }).catch(()=>({points: null, error: true}));
-            if(!_.isNumber(points)) points = 0;
+            let {points, earned, error} = await api.fetch(`http://127.0.0.1:8080/api/teammates/${target.id}`, {}).catch(()=>({points: null, error: true}));
             if(!error)
-                await client.say(channel, `${_.displayName(userstate)} has ${Math.round(points)} ${loyalty.points}`);
+                await client.say(channel, `${target.display_name} has ${Math.round(points)} ${loyalty.points}.${detailed ? ` (${Math.round(earned)} earned overall)` : ""}`);
             else
                 await client.say(channel, `Unable to reach beastie-webserver`);
         });
@@ -90,9 +80,6 @@ module.exports = async (client) => {
             bonus = parseInt(bonus, 10)|0;
             let {error} = await api.fetch("http://127.0.0.1:8080/api/teammates/bonus", {
                 method: "post",
-                headers: {
-                    "Client-ID": _.get(secrets, "webserver.api_access")
-                },
                 body: JSON.stringify({ points: bonus })
             }).catch(()=>({ error: true }));
             if(!error)
@@ -110,20 +97,17 @@ module.exports = async (client) => {
             bonus = parseInt(bonus, 10)|0;
 
             if(!_.isEmpty(name)){
-                const {users} = await api.login(name);
-                if(_.isEmpty(users)){
-                    await client.say(channel, `Sorry, "${name}" is not a Twitch user, and therefore doesn't have any ${loyalty.points}.`);
+                const target = await api.twitch({ name: name.toLowerCase() });
+                if(_.isEmpty(target)){
+                    return await client.say(channel, `Sorry, "${name}" is not a Twitch user, and therefore doesn't have any ${loyalty.points}.`);
                 } else {
-                    let id = users[0]._id;
-                    let {error} = await api.fetch(`http://127.0.0.1:8080/api/teammates/${id}/bonus`, {
+                    let {error} = await api.fetch(`http://127.0.0.1:8080/api/teammates/${target.id}/bonus`, {
                         method: "post",
-                        headers: {
-                            "Client-ID": _.get(secrets, "webserver.api_access")
-                        },
                         body: JSON.stringify({ points: bonus }),
                     }).catch(()=>({ error: true }));
+
                     if(!error)
-                        await client.say(channel, `${_.displayName(users[0])} has been given ${bonus} ${loyalty.points}`);
+                        await client.say(channel, `${target.display_name} has been given ${bonus} ${loyalty.points}`);
                     else
                         await client.say(channel, `Unable to reach beastie-webserver`);
                 }
@@ -132,23 +116,12 @@ module.exports = async (client) => {
             }
         });
 
-    (async () => {
-        while(true){
-            if(streaming){
-                // bonusall earned rate_earn
-                // sleep rate_interval
-            } else {
-                // sleep longer
-            }
-        }
-    })
-
     client
         .command("loyalty", { hidden: true })
         .description(`Tells you what ${loyalty.points} are for.`)
         .alias("info")
         .clearance("viewer")
         .action(async (channel, userstate) => {
-            await client.say(channel, `You earn ${loyalty.rate_earn} ${loyalty.points} for every ${loyalty.rate_interval} minutes you watch while ${_.displayName(broadcaster)} is live. Check your ${loyalty.points} by typing !${loyalty.points} and visit ${loyalty.rewards_url} to see what you can do with them.`);
+            await client.say(channel, `You earn ${loyalty.rate_earn} ${loyalty.points} for every ${loyalty.rate_interval} minutes you watch while ${broadcaster.display_name} is live. Check your ${loyalty.points} by typing !${loyalty.points} and visit ${loyalty.rewards_url} to see what you can do with them.`);
         });
 };

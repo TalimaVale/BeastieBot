@@ -16,7 +16,7 @@ module.exports = async (client) => {
             direction: "desc"
         })}`);
 
-        await _.delay(1000);
+        await _.sleep(1000);
 
         while(true){
             const body = _.defaults(
@@ -38,7 +38,7 @@ module.exports = async (client) => {
                         .map(follower => (
                             _.find(follows, { user: { _id: follower.user._id } }) ? 
                             chalk.gray : chalk.blue
-                        )(_.displayName(follower.user)))
+                        )(follower.user.display_name))
                         .join(", ")
                 );
                 body.follows = body.follows.filter(follower => 
@@ -51,17 +51,17 @@ module.exports = async (client) => {
                     for(const follower of body.follows){
                         if(!streaming) continue;
                         broadcaster.emit("follow", follower);
-                        await _.delay(2000);
+                        await _.sleep(2000);
                     }
                 }
             }
 
-            await _.delay(streaming ? 15*1000 : 5*60*1000);
+            await _.sleep(streaming ? 15*1000 : 5*60*1000);
         }
     })();
 
     broadcaster.on("follow", async follow => {
-        await client.say(broadcaster.name, `Welcome to the team ${_.displayName(follow.user)}! :D`);
+        await client.say(settings.home, `Welcome to the team ${follow.user.display_name}! :D`);
     });
 
     client
@@ -69,6 +69,6 @@ module.exports = async (client) => {
         .description("Tells you how many new followers I've seen since I started up")
         .clearance("broadcaster")
         .action(async (channel, userstate) => {
-            await client.say(channel, `${_.displayName(userstate)}, ${follows.length} new follows since startup`);
+            await client.say(channel, `${userstate.display_name}, ${follows.length} new follows since startup`);
         });
 };

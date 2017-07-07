@@ -11,11 +11,112 @@ ipc.config.silent = true;
 ipc.config.id = "beastie";
 ipc.config.retry = 1500;
 
+const root = path.resolve(__dirname, "../../");
 const _ = module.exports = Object.setPrototypeOf({
-    channel(name){
-        return `#${name.toLowerCase().replace("#", "")}`;
+    fs: {
+        unlink: util.promisify(fs.unlink),
+        read: util.promisify(fs.readFile),
+        write: util.promisify(fs.writeFile),
+        mkdirp: util.promisify(require("mkdirp")),
     },
-    delay(time = 0){
+    csv: {
+        root,
+        decode(text, opts = {}){
+            return new Promise((resolve, reject) => {
+                csv.parse(text, _.defaults(opts, {
+                    columns: true
+                }), (error, table) => {
+                    if(error) reject(error);
+                    else resolve(table);
+                });
+            });
+        },
+        encode(data, opts = {}){
+            return new Promise((resolve, reject) => {
+                csv.stringify(data, _.defaults(opts, {
+                    header: true
+                }), (error, text) => {
+                    if(error) reject(error);
+                    else resolve(text);
+                });
+            });
+        },
+        async read(file, opts = { mkdir: false }){
+            file = path.resolve(this.root, `${file}.csv`);
+            if(opts.mkdir) await _.fs.mkdirp(path.dirname(file));
+            return await _.fs.read(file, "utf8")
+                .then(contents => this.decode(contents, opts))
+                .catch(() => null);
+        },
+        async write(file, contents, opts = {}){
+            if(!_.isString(contents)) contents = await this.encode(contents, opts);
+            file = path.resolve(this.root, `${file}.csv`);
+            await _.fs.mkdirp(path.dirname(file));
+            await _.fs.write(file, contents);
+        }
+    },
+    ini: {
+        root,
+        safe(text){ return ini.safe(text); },
+        unsafe(text){ return ini.unsafe(text); },
+        
+        encode(data){ return ini.encode(data); },
+        decode(text){ return ini.decode(text); },
+        async read(file, opts = { mkdir: false }){
+            file = path.resolve(this.root, `${file}.ini`);
+            if(opts.mkdir) await _.fs.mkdirp(path.dirname(file));
+            return await _.fs.read(file, "utf8")
+                .then(contents => this.decode(contents))
+                .catch(()=>null);
+        },
+        async write(file, contents, opts = {}){
+            if(!_.isString(contents)) contents = await this.encode(contents);
+            file = path.resolve(this.root, `${file}.ini`);
+            await _.fs.mkdirp(path.dirname(file));
+            await _.fs.write(file, contents);
+        }
+    },
+    pid: {
+        root: path.resolve(root, "pids/"),
+        async unlink(file){
+            file = path.resolve(this.root, `${file}.pid`);
+            return _.fs.unlink(file);
+        },
+        // caveat: returns false if testing against our own pid
+        async check(file){
+            const pid = await this.read(file);
+            if(pid === null) return false;
+            if(!require("is-running")(pid)) {
+                await this.unlink(file);
+                return false;
+            }
+            return pid != process.pid;
+        },
+        async read(file, opts = { unlink: false, mkdir: false }){
+            if(opts.unlink) await this.check(file);
+            file = path.resolve(this.root, `${file}.pid`);
+            if(opts.mkdir) await _.fs.mkdirp(path.dirname(file));
+            return _.fs.read(file, "utf8")
+                .catch(() => null);
+        },
+        async write(file, contents = process.pid, opts = { check: true }){
+            if(opts.check && await this.check(file)) 
+                throw new Error(`pid file "${file}.pid" appears to already be in use.`);
+            file = path.resolve(this.root, `${file}.pid`);
+            await _.fs.mkdirp(path.dirname(file));
+            await _.fs.write(file, contents+"");
+        },
+
+        async kill(file){
+            if(await _.pid.check(file))
+                return process.kill(await _.pid.read(file), "SIGKILL");
+        },
+    },
+    ipc: {
+
+    },
+
+    sleep(time = 0){
         let timer;
         const promise = new Promise(resolve => timer = (time == 0 ? setImmediate : setTimeout)(resolve, time));
         const _unref = promise.unref;
@@ -26,6 +127,7 @@ const _ = module.exports = Object.setPrototypeOf({
         };
         return promise;
     },
+
     persevere(opts = {}){
         _.defaults(opts, {
             retries: 3,
@@ -42,72 +144,26 @@ const _ = module.exports = Object.setPrototypeOf({
                 } catch(error) {
                     errors.push(error);
                     if(opts.retries <= 0) throw errors;
-                    await _.delay(Math.min(opts.timeout * Math.pow(opts.decay, ++times), opts.maxTimeout));
+                    await _.sleep(Math.min(opts.timeout * Math.pow(opts.decay, ++times), opts.maxTimeout));
                 }
             }
             throw errors;
         };
     },
 
-    displayName(obj){
-        return _.get(obj, "display_name",
-            _.get(obj, "display-name",
-                _.upperFirst(
-                    _.get(obj, "username",
-                        _.get(obj, "user_name",
-                            _.get(obj, "name", 
-                                "teammate"
-                            )
-                        )
-                    )
-                )
-            )
-        );
-    },
-
-    isModerator(obj, channel = ""){
-        _.defaults(obj, { badges: {} });
-        return obj.mod || "moderator" in obj.badges
-        || "broadcaster" in obj.badges
-        || _.channel(obj.username || obj.name) === _.channel(channel);
-    },
-    isBroadcaster(obj, channel = ""){
-        _.defaults(obj, { badges: {} });
-        return "broadcaster" in obj.badges
-        || _.channel(obj.username || obj.name) === _.channel(channel);
-    },
-
-    unlink: util.promisify(fs.unlink),
-    readFile: util.promisify(fs.readFile),
-    writeFile: util.promisify(fs.writeFile),
-    mkdirp: util.promisify(require("mkdirp")),
-
-    csv: {
-        parse(text, opts = {}){
-            return new Promise((resolve, reject) => {
-                csv.parse(text, _.defaults(opts, {
-                    columns: true
-                }), (error, table) => {
-                    if(error) reject(error);
-                    else resolve(table);
-                });
-            });
-        },
-        stringify(table, opts = {}){
-            return new Promise((resolve, reject) => {
-                csv.stringify(table, _.defaults(opts, {
-                    header: true
-                }), (error, text) => {
-                    if(error) reject(error);
-                    else resolve(text);
-                });
-            });
-        }
-    },
-
     exitHandler(callback){
         process.cleanup = [];
         process.once("SIGTERM", async () => {
+            let counter = 0, max = 5;
+            process.on("SIGINT", async () => {
+                if(++counter == max){
+                    console.error("Stopping immediately!");
+                    process.exit(process.exitCode = 1);
+                    while(true);
+                } else {
+                    console.log("Send SIGINT %s more times to stop immediately.", max - counter);
+                }
+            });
             setTimeout(() => process.exit(1), 10 * 1000).unref();
             try {
                 while(process.cleanup.length > 0)
@@ -135,16 +191,6 @@ const _ = module.exports = Object.setPrototypeOf({
         });
     },
 
-    async readIni(ini, defaults){
-        const filePath = path.resolve(__dirname, `../../config/${file}.ini`)
-        return _.defaults(
-            await _.readFile(filePath, "utf8")
-                .then(file => ini.decode(file))
-                .catch(()=>({})),
-            defaults
-        );
-    },
-
     exit(exitCode = process.exitCode){
         return new Promise(resolve => {
             process.once("exit", resolve);
@@ -153,38 +199,12 @@ const _ = module.exports = Object.setPrototypeOf({
         });
     },
 
-    // footgun: returns false if testing against own process
-    async running(name){
-        const pidFile = path.resolve(__dirname, `../../pids/${name}.pid`);
-        const pid = await _.readFile(pidFile, "utf8").catch(() => null);
-        if(pid === null || !require("is-running")(pid)){
-            if(pid !== null) await _.unlink(pidFile).catch(() => {});
-            return false;
-        } else return pid != process.pid;
-    },
 
-    async savePid(name, pid){
-        const pidFile = path.resolve(__dirname, `../../pids/${name}.pid`);
-        const pidDir = path.dirname(pidFile);
-        await _.mkdirp(pidDir);
-        await _.writeFile(pidFile, pid+"");
-    },
-    async readPid(name){
-        const pidFile = path.resolve(__dirname, `../../pids/${name}.pid`);
-        await _.running(name);
-        return await _.readFile(pidFile, "utf8").catch(() => null);
-    },
     async lockProcess(name){
-        const pidFile = path.resolve(__dirname, `../../pids/${name}.pid`);
-        const pidDir = path.dirname(pidFile);
-        let pid = await _.readFile(pidFile, "utf8").catch(() => null);
-        if(pid !== null && pid != process.pid && require("is-running")(pid)){
-            throw new Error(`./pids/${name}.pid represents another active process; unable to lock.`);
-        } else if(pid != process.pid){
-            pid = process.pid+"";
-            await _.savePid(name, pid);
-        }
-        process.cleanup.push(() => _.unlink(pidFile));
+        await _.pid.write(name, process.pid+"").catch(error => {
+            return Promise.reject("${name} is another active process. Unable to lock.");
+        });
+        process.cleanup.push(() => _.pid.unlink(name));
 
         ipc.config.id = name;
 
@@ -199,15 +219,10 @@ const _ = module.exports = Object.setPrototypeOf({
         ipcServer.on("SIGTERM", id => ipc.config.id == id ? _.exit(0) : null);
 
         return {
-            pid: pid,
+            pid: process.pid,
             ipc: ipcServer,
             exit: _.exit,
         };
-    },
-
-    async killProcess(name){
-        if(await _.running(name))
-            return process.kill(await _.readPid(name), "SIGKILL");
     },
 
     async stopProcess(ipcClient){
@@ -249,11 +264,11 @@ const _ = module.exports = Object.setPrototypeOf({
             killSignal: "SIGTERM"
         }, config));
         setImmediate(()=>monitor.start());
-        let timer = _.delay(5000);
+        let timer = _.sleep(5000);
         monitor.on("exit:code", code => {
             monitor.stop();
             timer.then(()=>{
-                timer = _.delay(5000);
+                timer = _.sleep(5000);
                 monitor.start();
             });
         });
@@ -272,7 +287,7 @@ const _ = module.exports = Object.setPrototypeOf({
     async connectProcess(name, force = false, timeout = 50){
         if(!force){
             const pidFile = path.resolve(__dirname, `../../pids/${name}.pid`);
-            const pid = await _.readFile(pidFile, "utf8").catch(() => null);
+            const pid = await _.fs.read(pidFile, "utf8").catch(() => null);
             if(pid === null || !require("is-running")(pid))
                 throw new Error(`${name} does not appear to be running. (PID file not found)`);
         }

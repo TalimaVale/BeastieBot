@@ -24,7 +24,7 @@ const publicDir = path.resolve(__dirname, "./webserver/public");
         console.log("[beastie-webserver] goodbye");
     });
 
-    if(await _.running("beastie-webserver")){
+    if(await _.pid.check("beastie-webserver")){
         console.error("[beastie-webserver] already running!");
         return _.exit(1);
     }
@@ -63,7 +63,7 @@ const publicDir = path.resolve(__dirname, "./webserver/public");
         if(endpoint.startsWith("api/"))
             service.hooks({
                 before(hook){
-                    if(hook.params.client_id !== _.get(secrets, "webserver.api_access"))
+                    if(hook.params.client_id !== secrets.webserver.client_id)
                         return Promise.reject(new errors.NotAuthenticated("Wrong or missing Client-ID"));
                 }
             })
@@ -97,7 +97,7 @@ const publicDir = path.resolve(__dirname, "./webserver/public");
         if(server.listening) 
             Promise.race([
                 new Promise(resolve => server.close(resolve)),
-                _.delay(2000).unref().then(()=>server.unref())
+                _.sleep(2000).unref().then(()=>server.unref())
             ]).then(resolve)
         else resolve();
     }));

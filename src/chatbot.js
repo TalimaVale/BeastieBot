@@ -1,4 +1,4 @@
-require("./misc/secrets");
+// require("./misc/secrets");
 const _ = require("./misc/utils");
 
 (async () => {
@@ -6,14 +6,14 @@ const _ = require("./misc/utils");
         console.log("[beastie-chatbot] goodbye");
     });
 
-    if(await _.running("beastie-chatbot")){
+    if(await _.pid.check("beastie-chatbot")){
         console.error("[beastie-chatbot] already running!");
         return _.exit(1);
     }
 
     let beastieChatbot = await _.lockProcess("beastie-chatbot");
 
-    if(await _.readFile("../config/secrets.ini").catch(() => null) == null){
+    if(await _.ini.read("config/secrets") == null){
         console.log("[beastie-chatbot] shutting down, no secrets.ini found");
         return await _.stopProcess("beastie-monitor");
     }
