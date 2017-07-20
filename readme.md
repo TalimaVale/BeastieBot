@@ -1,31 +1,33 @@
 # teamTALIMA BeastieBot
+Welcome to one of teamTALIMA’s project repos! We are an online, educational development community working on website, chat bot, and game development projects with our primary focus on game development.
 
-## Content
+### Table of Contents
 * [What is BeastieBot](#what-is-beastiebot)
 * [Using BeastieBot](#can-i-use-beastiebot) 
-* [Contribute to the BeastieBot project](#this-is-awesome-how-do-i-contribute?) 
-* [Programming](#programming) 
-* [Testing](#testing) 
-* [New Feature Ideas](#new-feature-ideas) 
+* [Contributing to BeastieBot](#this-is-awesome-how-do-i-contribute)
+  * [Programming](#programming) 
+  * [Testing](#testing) 
+  * [New Feature Ideas](#new-feature-ideas) 
 * [Who are the Project Managers](#who-are-the-project-managers) 
 * [teamTALIMA Community Links](#teamtalima-community-links) 
 * [License](#license) 
 
-
 ## What is BeastieBot?
+~mention current platforms and features
 
 ## Can I use BeastieBot?
+~link to 'HowToInstall.md
 
 ## Can I contribute to the BeastieBot project?
 
 ## This is Awesome! How do I contribute?
+~list project dependencies
 
-### Programming
+ ### Programming
 
-### Testing
+ ### Testing
 
-### New Feature Ideas
-
+ ### New Feature Ideas
 
 ## Who are the Project Managers?
 * Talima (via teamTALIMA acct.)
