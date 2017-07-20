@@ -1,3 +1,52 @@
+# teamTALIMA BeastieBot
+
+## Content
+* [What is BeastieBot](#what-is-beastiebot)
+* [Use BeastieBot](#can-i-use-beastiebot) 
+* [Contribute to BeastieBot](#this-is-awesome!-how-do-i-contribute?) 
+* [Programming](#programming) 
+* [Testing](#testing) 
+* [New Feature Ideas](#new-feature-ideas) 
+* [Who are the Project Managers](#who-are-the-project-managers) 
+* [teamTALIMA Community Links](#teamTALIMA-community-links) 
+* [License](#license) 
+
+
+## What is BeastieBot?
+
+## Can I use BeastieBot?
+
+## Can I contribute to the BeastieBot project?
+
+## This is Awesome! How do I contribute?
+
+### Programming
+
+### Testing
+
+### New Feature Ideas
+
+
+## Who are the Project Managers?
+* Talima (via teamTALIMA acct.)
+* Scryptonite
+
+## teamTALIMA Community Links
+[GitHub Repo for BeastieBot](https://github.com/teamTALIMA/BeastieBot "teamTALIMA's BeastieBot Repo")
+
+[Discord Server](https://discordapp.com/invite/dGFQ5tE "teamTALIMA's Discord Server")
+
+[Twitch Channel](https://www.twitch.tv/teamtalima "teamTALIMA's Twitch Channel")
+
+[YouTube Channel](https://www.youtube.com/channel/UCQEtRUEQItKpn-q_ZBJXUVQ "teamTALIMA's YouTube Channel")
+
+## License
+GNU GPLv3
+
+
+
+
+
 # teamTALIMA's Beastie Bot
 <sup>*teamTALIMA Project &mdash; [Developed LIVE on twitch.tv/teamTALIMA](https://www.twitch.tv/teamtalima)*</sup>
 
@@ -115,3 +164,9 @@ Open command prompt and change to your development folder
 
 ## License
 GNU GPLv3
+
+
+
+
+
+
