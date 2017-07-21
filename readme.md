@@ -4,7 +4,7 @@ Welcome to one of teamTALIMA’s project repos! We are an online, educational de
 ### Table of Contents
 * [What is BeastieBot](#what-is-beastiebot)
 * [Using BeastieBot](#can-i-use-beastiebot) 
-* [Contributing to BeastieBot](#this-is-awesome-how-do-i-contribute)
+* [Contributing to BeastieBot](#can-i-contribute-to-the-beastiebot-project)
   * [Programming](#programming)
   * [Testing](#testing) 
   * [New Feature Ideas](#new-feature-ideas) 
