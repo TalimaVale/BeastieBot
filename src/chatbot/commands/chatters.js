@@ -9,33 +9,57 @@ module.exports = async (client) => {
 
     const chatters = {};
 
-    // const onjoin = () => {};
-    // const onpart = () => {};
-    // const onmessage = () => {};
-    // client.on("join", onjoin);
-    // client.on("part", onpart);
-    // client.on("message", onmessage);
+    (async () => {
+        client.on("join", async (channel, username, self) => {
+            if(!(channel in chatters))
+                chatters[channel] = [];
+            
+            if(!_.find(chatters[channel], { name: username })){
+                const user = await api.twitch({ name: username });
+                console.log(user);
+                chatters[channel].push({ name: user.name, id: user.id });
+            }
 
-    // (async () => {
-    //     while(true){
-    //         for(let room of client.getChannels()){
-                
+            if(self){
+                const {users} = await api.chatters(channel.slice(1)).catch(()=>{users:[]});
+                for(const user of users){
+                    if(!_.find(chatters[channel], { name: user.name }))
+                        chatters[channel].push({ name: user.name, id: user._id });
+                }
+            }
+        });
 
-    //             // populate new
-    //             // prune old/stale
-    //         }
-    //         await api.chatters()
-    //         await _.sleep(5 * 60 * 1000)
-    //     }
-    // });
+        client.on("part", (channel, username, self) => {
+            if(_.isArray(chatters[channel]))
+                _.remove(chatters[channel], name => name === username);
 
-    client.chatters = room => room ? chatters[room] : chatters;    
+            if(_.isEmpty(chatters[channel]) || self)
+                delete chatters[channel];
+        });
+
+        client.on("message", (channel, userstate, message, self) => {
+            if(["chat", "action", "cheer"].includes(userstate["message-type"]))
+                if(channel in chatters && !_.find(chatters[channel], { name: userstate.username }))
+                    chatters[channel].push({ name: userstate.name, id: userstate.id });
+        });
+
+        // while(true){
+        //     const channels = client.getChannels();
+        //     for(let [channel, usernames] of Object.entries(chatters)){
+        //         if(!channels.includes(channel))
+        //             delete chatters[channel];
+        //     }
+        //     await _.sleep(5 * 60 * 1000);
+        // }
+    })();
+
+    client.chatters = channel => channel ? (channel in chatters ? chatters[channel] : []) : chatters;    
 
     client
         .command("chatters", { hidden: true })
-        .description("Tells you how many chatters are in the room.")
+        .description("Tells you how many chatters are in this channel.")
         .clearance("moderator")
         .action(async (channel, userstate) => {
-
+            client.say(channel, `There are ${client.chatters(channel).length} chatters`);
         });
 };

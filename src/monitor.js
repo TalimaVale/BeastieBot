@@ -1,3 +1,10 @@
+/*
+    This file is responsible for monitoring & ensuring that both the `chatbot` and `webserver` process are running; restarting either if they crash.
+
+    This process also will tell both of them to shutdown gracefully if it receives a SIGINT message (primarily via IPC (Interprocess communication) -- thanks Windows).
+*/
+
+
 const _ = require("./misc/utils");
 const forever = require("forever-monitor");
 

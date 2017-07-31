@@ -78,9 +78,14 @@ module.exports = async (client) => {
         .action(async (channel, userstate, message) => {
             let [bonus] = message.split(" ").slice(1);
             bonus = parseInt(bonus, 10)|0;
+
+            let body = { points: bonus };
+            if(client.chatters && client.chatters(channel).length > 0)
+                body.teammates = client.chatters(channel);
+
             let {error} = await api.fetch("http://127.0.0.1:8080/api/teammates/bonus", {
                 method: "post",
-                body: JSON.stringify({ points: bonus })
+                body: JSON.stringify(body)
             }).catch(()=>({ error: true }));
             if(!error)
                 await client.say(channel, `Everyone has been given ${bonus} ${loyalty.points}!`);

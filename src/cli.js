@@ -6,6 +6,11 @@
  * License: GPL-3.0
  */
 
+/*
+    This file is responsible for the CLI (Command Line Interface).
+    It is capable of starting and stopping a `monitor` instance running in the background, setting up (or updating) the secrets file, as well as tell you if a monitor instance is already running.
+*/
+
 const path = require("path");
 const {spawn} = require("child_process");
 

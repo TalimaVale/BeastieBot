@@ -1,3 +1,9 @@
+/*
+    This file is responsible for running a webserver on port 8080.
+
+    It currently only serves some API endpoints for transacting & managing loyalty points, but in the future it will manage all of the overlays too.
+*/
+
 const settings = require("./misc/settings");
 const secrets = require("./misc/secrets");
 

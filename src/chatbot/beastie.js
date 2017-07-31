@@ -17,6 +17,7 @@ module.exports = (async () => {
         await beastie.use(
             // require("./events/hosts"),
             // require("./events/follows"),
+            require("./commands/chatters"),
             // require("./commands/general"),
             require("./commands/points")
             // require("./commands/uptime"),
@@ -46,9 +47,11 @@ module.exports = (async () => {
         if(settings.home != broadcaster.user.channel)
             await beastie.join(broadcaster.user.channel);
 
+        // // startup announcement:
         // if(!_.isEmpty(settings.announce.startup))
         //     await beastie.say(settings.home, settings.announce.startup);
 
+        // // shutdown announcement:
         // if(!_.isEmpty(settings.announce.shutdown))
         //     process.cleanup.unshift(() => 
         //         beastie.say(settings.home, process.exitCode == 0 ? settings.announce.shutdown : "Something went wrong, shutting down.").catch(()=>{})

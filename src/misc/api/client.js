@@ -50,6 +50,10 @@ module.exports = api => ({
             client.display_name = user.display_name;
         }
 
+        client.on("cheer", (channel, userstate, message) => {
+            client.emit("message", _.assign(userstate, { "message-type": "cheer" }), message);
+        });
+
         client.on("hosting", (channel, target, viewers) => {
             console.log("[beastie-chatbot] %s hosting %s to %s viewers", 
                 // chalk.gray(client.name), 
