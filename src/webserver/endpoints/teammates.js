@@ -68,7 +68,7 @@ Object.assign(module, {
                 const touched = [];
 
                 if(!_.isArray(targets))
-                    targets = (await api.chatters("teamtalima" || broadcaster.name)).users.map(({name, _id})=>({ name, id: _id }));
+                    targets = (await api.chatters(/* "teamtalima" || */broadcaster.name)).users.map(({name, _id})=>({ name, id: _id }));
                 
                 for(let teammate of targets){
                     let existing = _.find(teammates, { id: teammate.id });
