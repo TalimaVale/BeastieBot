@@ -149,6 +149,7 @@ const api = module.exports = {
                     let names = usernames.splice(0, 100);
                     users = users.concat((await this.login(...names)).users);
                 }
+                users = users.map(user => Object.setPrototypeOf(api.normalize(user), user));
             } else {
                 users = usernames.map(username => ({ name: username, display_name: _.upperFirst(username) }));
             }

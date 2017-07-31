@@ -15,17 +15,17 @@ module.exports = (async () => {
             settings.home = broadcaster.user.channel;
 
         await beastie.use(
-            // require("./events/hosts"),
-            // require("./events/follows"),
+            require("./events/hosts"),
+            require("./events/follows"),
             require("./commands/chatters"),
-            // require("./commands/general"),
-            require("./commands/points")
-            // require("./commands/uptime"),
-            // require("./commands/raids"),
-            // require("./commands/stream-info"),
-            // require("./commands/timers"),
-            // require("./commands/custom-commands"),
-            // require("./commands/strawpoll")
+            require("./commands/general"),
+            require("./commands/points"),
+            require("./commands/uptime"),
+            require("./commands/raids"),
+            require("./commands/stream-info"),
+            require("./commands/timers"),
+            require("./commands/custom-commands"),
+            require("./commands/strawpoll")
         );
 
         beastie.on("chat", async (channel, userstate, message, self) => {
@@ -47,15 +47,15 @@ module.exports = (async () => {
         if(settings.home != broadcaster.user.channel)
             await beastie.join(broadcaster.user.channel);
 
-        // // startup announcement:
-        // if(!_.isEmpty(settings.announce.startup))
-        //     await beastie.say(settings.home, settings.announce.startup);
+        // startup announcement:
+        if(!_.isEmpty(settings.announce.startup))
+            await beastie.say(settings.home, settings.announce.startup);
 
-        // // shutdown announcement:
-        // if(!_.isEmpty(settings.announce.shutdown))
-        //     process.cleanup.unshift(() => 
-        //         beastie.say(settings.home, process.exitCode == 0 ? settings.announce.shutdown : "Something went wrong, shutting down.").catch(()=>{})
-        //     );
+        // shutdown announcement:
+        if(!_.isEmpty(settings.announce.shutdown))
+            process.cleanup.unshift(() => 
+                beastie.say(settings.home, process.exitCode == 0 ? settings.announce.shutdown : "Something went wrong, shutting down.").catch(()=>{})
+            );
     });
 
     return beastie;

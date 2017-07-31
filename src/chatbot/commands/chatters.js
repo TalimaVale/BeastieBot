@@ -16,7 +16,7 @@ module.exports = async (client) => {
             
             if(!_.find(chatters[channel], { name: username })){
                 const user = await api.twitch({ name: username });
-                console.log(user);
+                // console.log(user);
                 chatters[channel].push({ name: user.name, id: user.id });
             }
 
