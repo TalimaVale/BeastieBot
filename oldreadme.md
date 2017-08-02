@@ -1,117 +1,99 @@
-# teamTALIMA's Beastie Bot
-<sup>*teamTALIMA Project &mdash; [Developed LIVE on twitch.tv/teamTALIMA](https://www.twitch.tv/teamtalima)*</sup>
+# teamTALIMA BeastieBot
+Welcome to one of teamTALIMA’s project repos! We are an online, educational development community working on website, chat bot, and game development projects with our primary focus on game development.
 
-> A bot for Twitch (IRC) chatrooms and Discord servers. Developed with Node.js and the npm dependencies 'lodash' and 'tmi.js'.
-> 
+> teamTALIMA's personal BeastieBot, trained to watch over Twitch chatrooms and (soon) Discord servers
 
+## What is BeastieBot?
+BeastieBot is an ongoing, open source, chat bot project. He is designed to be used in Twitch chat rooms and (soon to be implemented) Discord servers, and was created to be a customizable live streaming tool and online community moderator. His primary features include:
 
- ## Content
- * [BeastieBot Features](#beastiebot-features) 
- * [Upcoming Features](#upcoming-features) 
- * [Dependencies](#dependencies) 
- * [Install and Configuration](#install-and-configuration) 
-   - [Debian](#debian) 
-   - [Windows](#windows) 
- * [License](#license) 
+## Contents
 
+  - [Features](#features)
+    - [Upcoming Features](#upcoming-features)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation) 
+    - [Troubleshooting](#troubleshooting)
+  - [License](#license) 
 
+BeastieBot is an ongoing community project, and we are always interested in new ideas, features and developers interested in helping us train Beastie to be even more awesome!
 
+## Features
 
-## BeastieBot Features
 Some of Beastie's main features include...
 
-- **Commands List** - A list of user commands (!example, etc.) to be used in twitch chatrooms
-- **Events** - Beastie will listen for common events when active in twitch chatrooms
-- **Custom Timers** - Set of customizable timers which fire even when stream is offline
-- **Raid System** - Robust twitch raiding system for tracking # of raiders and awarding loyalty points for successful raids
-- **Message Queue** - A system for timed-release of BeastieBot's responses to protect bot from being timed out
+  - **Commands**
+    - For viewers
+      - `!helpbeastie` Tells you all of the available commands
+      - `!hellobeastie` Says hello to you
+      - `!goodbyebeastie` Says goodbye to you
+      - `!rawr` Rawrs in the chat
+      - `!pet` Pets Beastie on the head
+      - `!awesomeness` Tells you how much awesomeness you have
+      - `!uptime` Tells you how long the stream has been running
+      - `!raidready` Joins you into the active chat raid team, if there is one
+      - `!loyalty` or `!info` A hidden command that tells you what awesomeness is for
+      - `!<stream info>` Tells you about `<stream info>` &mdash; Configurable by the broadcaster in the [settings.ini]
+      - `!<custom command trigger>` Tells you about `<custom command trigger>` if it's set up as a custom command
+    - For moderators
+      - `!shoutout <channel>` Gives a shoutout to an awesome channel
+      - `!awesomeness <teammate>` Tells you how much awesomeness `<teammate>` has
+      - `!raidteam` Tells you how many teammates have joined the raid team & explains how to join
+      - `!strawpoll <poll title>|<answer 1>|<answer N...>` Creates a Straw Poll, titled `<poll title>`, with `<answer 1>` through `<answer N>` as choices in the poll
+      - `!commands add <trigger> <message...>` Creates a custom command `!<trigger>` that replies with `<message>`
+      - `!commands overwrite <trigger> <message...>` Overwrites a custom command `!<trigger>` so that it replies with `<message>`
+      - `!commands delete <trigger>` Deletes the custom command `!<trigger>`
+      - `!commands custom` Tells you the commands that are custom
+    - For the broadcaster
+      - `!bonusall <amount>` Gives everyone bonus awesomeness
+      - `!bonus <teammate> <amount>` Gives `<teammate>` bonus awesomeness
+      - `!raidstart` Starts the process for a chat raid and tells everyone how to join
+      - `!raidstop` Stops an active raid
+      - `!timers` Tells you all current timers
+      - `!timers <disable|enable> <timer>` disables or enables `<timer>`
+      - `!deliberatecrash` A hidden debugging command that deliberately crashes Beastie -- useful for quickly reloading him.
+      - `!follows` A hidden comand that tells you how many new followers Beastie has seen since he started up.
+  - **Events**
+    - New follows - New followers are welcomed to the stream.
+    - Hosts by other channels - Announces that another channel has hosted the broadcaster if their viewer count exceeds [settings.ini]'s `announce.hosted.threshold`
+  - **Custom Timers** - Set of customizable timers which are configurable in the [settings.ini]
+  - **Support for importing points from Revlo**
+    - Simply move your `<username>_points.csv` file that revlo gave you into the `data/` directory in the root of the BeastieBot project and rename it to `points.csv`. Voila!
+      - *Note: `data/` may need to be created if you've never run Beastie before*
 
+### Upcoming Features
 
-## Upcoming Features
-These features are soon to be developed, either on stream or merged from collaborating teammate branch
+[See the todo.md](todo.md)
 
-- **Twitch Chat Logs** - A system to record/log all twitch chat from the broadcaster's chatroom
-- **Twitch Chat Moderation** - Beastie moderation for purges, timeouts, and bans based off a customizable blacklist
-- **Additional Commands** - Commands for community links, project software, and an expanded !pet
-- **Beastie Treats** - BeastieBot's personal currency, used to unlock special commands, perks, and surprises
-- **Discord Support**
-- **Revlo Integration**
+## Prerequisites
 
+  1. [Node.js (**Latest**)](https://nodejs.org/en/download/current) &mdash; Instructions for installing via your [OS's package manager are also available](https://nodejs.org/en/download/package-manager/).
 
-## Dependencies
-* Node.js: ^7.10:  https://nodejs.org
-* lodash: ^4.17.4 : https://lodash.com/
-* tmi.js: ^1.1.2 : https://docs.tmijs.org/
+## Installation
 
+  1. Clone or [Download](https://api.github.com/repos/teamtalima/beastiebot/zipball) the repository and `cd` into it.<br>
+    `git clone https://github.com/teamTALIMA/BeastieBot`<br>`cd BeastieBot`
+  2. Run `npm i` to install Beastie's NPM dependencies
+  3. Optionally run `npm link` to add a `beastie` command to your path. *(If you don't want to run `npm link`, just use `node .` or `node ./src/cli.js` in place of `beastie` in the instructions below.)*
+  4. Run `beastie init` and provide your Client-ID, Broadcaster's OAuth and Bot's OAuth per the interactive prompts you will be presented.
+      - [*"Where can I get a Client-ID?"*](https://www.twitch.tv/kraken/oauth2/clients/new)
+      - [*"Where do I get an OAuth Token for my accounts?"*](https://twitchapps.com/tmi/)
+  5. Run `beastie start` to start beastie. *(Or use `node ./src/monitor` to start the monitor directly.)*
+  6. You should be done! Go test him out!
+  7. Optionally run `beastie status` to check the status or run `beastie stop` to stop any running instance of Beastie's monitor.
 
-## Install and Configuration
-note: current install and setup is aimed towards contributors. The wiki will provide high level instructions for end users.
+### Troubleshooting
 
-### Debian 
-
-#### Install
-```git clone https://github.com/teamTALIMA/BeastieBot```
-
-```sudo apt-get install nodejs```
-
-```sudo apt-get install npm```
-
-```cd BeastieBot```
-
-```npm install```
-
-#### Setup
-```cp config/secrets-example.js config/secrets.js```
-
-```nano config/secrets.js```
-
-#### Run
-```nodejs index.js```
-
-#### Troubleshooting
 > SyntaxError: Block-scoped declarations 
 
-Nodejs is out of date
-
-```sudo npm cache clean -f```
-
-```sudo npm install -g n```
-
-```sudo n stable```
-
-```sudo rm -f /usr/bin/nodejs```
-
-```sudo ln -s /usr/local/n/versions/node/7.10.0/bin/node /usr/bin/nodejs```
-
-Check version:
-
-```nodejs -v```
-
-```v7.10.0```
-
-### Windows 
-
-#### Install
-Download and install Node.js
-
-``` https://nodejs.org/en/ ```
-
-Open command prompt and change to your development folder
-
-```git clone https://github.com/teamTALIMA/BeastieBot ```
-
-```cd BeastieBot ```
-
-```npm install```
-
-#### Setup
-```copy config\secrets-example.js config\secrets.js```
-
-```notepad config\secrets.js```
-
-#### Run
-```node index.js```
-
+Nodejs is out of date, make sure you have the latest version of node installed.
 
 ## License
 GNU GPLv3
+
+
+-----------------
+
+![](screenshots/monitor_startup.gif)
+> GIF: *Running the monitor directly, then a `!hello` :arrow_right: `!help` :arrow_right: `!deliberatecrash` and then finally a `!rawr` being executed in the chat room by the broadcaster.*
+
+[settings.ini]: config/settings.ini

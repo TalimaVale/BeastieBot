@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>...</title>
+</head>
+<body>
+  Todo: Rewards &amp; everything here.
+  <!--<h1>Welcome to Feathers</h1>
+  <p>Open up the console in your browser.</p>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/core-js/2.1.4/core.min.js"></script>
+  <script type="text/javascript" src="//npmcdn.com/feathers-client@2.0.0/dist/feathers.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+    // Set up socket.io
+    var socket = io("http://127.0.0.1:8080");
+    // Set up Feathers client side
+    var app = feathers();
+    // Register hooks module
+    app.configure(feathers.hooks());
+    // Register socket.io
+    app.configure(feathers.socketio(socket));
+    // Set up authentication with a store to cache your auth token
+    app.configure(feathers.authentication({ storage: window.localStorage }));
+    // Authenticating using a email and password
+    app.authenticate({
+      strategy: "local",
+      email: "beastie@localhost",
+      password: "beastie"
+    }).then(function(result){
+      console.log("Authenticated!", result);
+     // Find our users on the server via sockets
+      app.service("users").find({}).then(function(users){
+        console.log("Users!", users);
+      });
+    }).catch(function(error){
+      console.error("Error authenticating!", error);
+    });
+  </script>-->
+</body>
+</html>

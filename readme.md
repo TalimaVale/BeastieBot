@@ -10,7 +10,7 @@ Welcome to one of teamTALIMA’s project repos! We are an online, educational de
   * [New Feature Ideas](#new-feature-ideas) 
 * [Who are the Project Managers](#who-are-the-project-managers) 
 * [teamTALIMA Community Links](#teamtalima-community-links) 
-* [License](#license) 
+* [License](#license)
 
 ## What is BeastieBot?
 BeastieBot is an ongoing, open source, chat bot project. He is designed to be used in Twitch chat rooms and (soon to be implemented) Discord servers, and was created to be a customizable live streaming tool and online community moderator. His primary features include:
