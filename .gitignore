@@ -5,10 +5,13 @@
 
 
 # Secret Files
+config/secrets.*
 
-config/secrets.js
-ideas.js
-ideas2.js
-nbproject/private/private.properties
-nbproject/project.xml
-nbproject/project.properties
+# Bot Data
+/data/
+/logs/
+/pids/
+
+
+# Development Environments
+nbproject/

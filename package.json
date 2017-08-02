@@ -1,5 +1,5 @@
 {
-  "name": "ttsbeastie",
+  "name": "beastiebot",
   "version": "1.0.1",
   "description": "teamTALIMA's personal BeastieBot, trained to watch over Twitch chatrooms and Discord servers",
   "keywords": [
@@ -11,16 +11,53 @@
     "beastiebot"
   ],
   "homepage": "https://github.com/teamTALIMA/BeastieBot",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/teamTALIMA/BeastieBot.git"
+  },
   "bugs": {
     "url": "https://github.com/teamTALIMA/BeastieBot/issues",
     "email": "teamTALIMA@gmail.com"
   },
-  "license": "GNU GPLv3",
-  "author": "Talima Vale <teamTALIMA@gmail.com> (twitch.tv/teamTALIMA)",
-  "contributors": [],
-  "main": "index.js",
+  "license": "GPL-3.0",
+  "author": "Talima Vale <teamTALIMA@gmail.com> (https://www.twitch.tv/teamTALIMA)",
+  "contributors": [
+    "Scryptonite <scryptonite.mail@gmail.com>"
+  ],
+  "main": "./src/cli.js",
+  "preferGlobal": true,
+  "bin": {
+    "beastie": "./src/cli.js"
+  },
   "dependencies": {
+    "body-parser": "^1.17.2",
+    "chalk": "^1.1.3",
+    "commander": "^2.10.0",
+    "csv": "^1.1.1",
+    "feathers": "^2.1.4",
+    "feathers-authentication": "^1.2.6",
+    "feathers-authentication-jwt": "^0.3.1",
+    "feathers-authentication-local": "^0.4.3",
+    "feathers-errors": "^2.8.1",
+    "feathers-hooks": "^2.0.1",
+    "feathers-memory": "^1.1.0",
+    "feathers-rest": "^1.7.4",
+    "feathers-socketio": "^2.0.0",
+    "forever-monitor": "^1.7.1",
+    "ini": "^1.3.4",
+    "inquirer": "^3.1.1",
+    "is-running": "^2.1.0",
     "lodash": "^4.17.4",
-    "tmi.js": "^1.1.2"
+    "mkdirp": "^0.5.1",
+    "node-fetch": "^1.7.1",
+    "node-ipc": "^9.0.1",
+    "rand-token": "^0.3.0",
+    "serve-favicon": "^2.4.3",
+    "tmi.js": "^1.2.1"
+  },
+  "scripts": {
+    "start": "node ./src/cli.js start",
+    "stop": "node ./src/cli.js stop",
+    "restart": "node ./src/cli.js restart"
   }
 }
