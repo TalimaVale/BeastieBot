@@ -25,7 +25,10 @@ setInterval(function(){
     if(beastie.broadcasterID == "#"){
         console.log("Beastie's broadcasterID is: " + beastie.broadcasterID);
         beastie.api(beastieFunctions.queryTwitchAPI(
-            "users?login=" + beastie.getChannels()[0].slice(1)
+            // Hardcoding broadcaster name to determine if autohost becomes getChannels()[0] before the broadcaster channel does
+            // NEED TO TEST WHEN OFFLINE AND AUTOHOSTING
+            // passing secrets.broadcaster.username will be more reliable than getChannels()[0]
+            "users?login=" + "teamTALIMA" //beastie.getChannels()[0].slice(1)
         ), function(err, res, body){
             beastie.broadcasterID = body.users[0]._id;
             console.log("This is our channel id: " + beastie.broadcasterID);
@@ -49,16 +52,14 @@ function checkFollows(id){
     beastie.api(beastieFunctions.queryTwitchAPI(
         "channels/" + id + "/follows/"
     ), function(err, res, body) {
-        if(err) {
+        if(err || body.follows == null || "error" in body) {
             console.error("There was a problem querying the Twitch API for follows:");
             console.error(err);
-        }
-        if(!err){
-            if (body.follows == null || "error" in body) {
-                console.warn("There was no follows array returned in the Twitch API response. :/");
-                if(body.error) console.error(body.error + ": " + body.message);
-                return;
-            }
+            
+            console.warn("There was no follows array returned in the Twitch API response.");
+            if(body.error) console.error(body.error + ": " + body.message);
+            return;
+        } else{
             if (latestFollow == "#") {
                 // for BeastieBot startup
                 latestFollow = body.follows[0].user.display_name;

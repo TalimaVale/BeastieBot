@@ -30,10 +30,13 @@ module.exports.flushQueue = function(channel, message){
 
 
 
-// Beastie releases one queued message per second
-setInterval(function(){
-    if(messageQueue.length > 0){
-        // return first element (messageQueue[0]) in messageQueue, execute it, then remove it
-        messageQueue.shift()();
-    }
-}, 500); // .5sec timer
+// Beastie releases one queued message per interval once he has joined the chat room
+beastie.once("join", function(){
+    setInterval(function(){
+        if(messageQueue.length > 0){
+            // return first element (messageQueue[0]) in messageQueue, execute it, then remove it
+            messageQueue.shift()();
+        }
+    // The tmi.js IsMod function could be faulty, improve when possible
+    }, beastie.isMod("#teamtalima", beastie.getUsername()) ? 500 : 2000); // .5sec timer
+}
