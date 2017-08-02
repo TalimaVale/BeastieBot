@@ -93,6 +93,7 @@ const api = module.exports = {
     _users: [],
     normalize(user){
         let normalized = {};
+        if(user == null || typeof user != "object") user = {};
         normalized.id = user.id || user._id || user["user-id"] || null;
         normalized.name = user.name || user.user_name || user.username || null;
         normalized.display_name = user.display_name || user["display-name"] || _.upperFirst(normalized.name) || null;
@@ -114,14 +115,20 @@ const api = module.exports = {
             let match;
             if(_.has(user, "id") && user.id && !(match = _.find(this._users, { id: user.id }))){
                 await this.fetch(`users/${user.id}`).then(body => {
-                    if(body.error) Promise.reject(body);
+                    if(body.error) 
+                        return Promise.reject(body);
                     let _user = this.normalize(body);
                     _.assign(user, _user);
                     this._users.push(_user);
                 });
             } else if(_.has(user, "name") && user.name && !(match = _.find(this._users, { name: user.name }))){
                 await this.fetch(`users?${qs.stringify({ login: user.name })}`).then(body => {
-                    if(body.error) Promise.reject(body);
+                    if(body.error) 
+                        return Promise.reject(body);
+                    if(body.users == null 
+                    || body.users.length != 1) 
+                        return Promise.reject(body);
+                    
                     let _user = this.normalize(body.users[0]);
                     _.assign(user, _user);
                     this._users.push(_user);

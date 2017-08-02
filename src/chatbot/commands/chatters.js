@@ -15,7 +15,13 @@ module.exports = async (client) => {
                 chatters[channel] = [];
             
             if(!_.find(chatters[channel], { name: username })){
-                const user = await api.twitch({ name: username });
+                let user;
+                try {
+                    user = await api.twitch({ name: username });
+                } catch(err){
+                    console.error(`[beastie-chatbot] [non-critical error] Looked up username "%s", but there was a problem... BibleThump`, username);
+                    return;
+                }
                 // console.log(user);
                 chatters[channel].push({ name: user.name, id: user.id });
             }
