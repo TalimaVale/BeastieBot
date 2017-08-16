@@ -2,6 +2,7 @@ const settings = require("../../misc/settings");
 const secrets = require("../../misc/secrets");
 
 const qs = require("querystring");
+const chalk = require("chalk");
 const _ = require("../../misc/utils");
 const api = require("../../misc/api");
 
