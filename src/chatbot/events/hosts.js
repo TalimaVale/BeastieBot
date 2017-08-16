@@ -10,6 +10,7 @@ module.exports = async (client) => {
 
     broadcaster.on("hosted", async (home, away, viewers) => {
         if(![settings.home, broadcaster.user.channel].includes(home)
+        if([settings.home, broadcaster.user.channel].includes(home)
         && viewers >= parseInt(_.get(settings, "announce.hosted.threshold", 0), 10)){
             const time = new Date();
             const friend = await api.twitch({ name: away });
