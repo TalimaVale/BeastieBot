@@ -1,8 +1,5 @@
 # Node Module Folders
-
 /[Nn]ode_modules/
-
-
 
 # Secret Files
 config/secrets.*
@@ -11,7 +8,6 @@ config/secrets.*
 /data/
 /logs/
 /pids/
-
 
 # Development Environments
 nbproject/
