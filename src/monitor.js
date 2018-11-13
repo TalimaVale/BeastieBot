@@ -32,7 +32,8 @@ const forever = require("forever-monitor");
     if(await _.pid.check("beastie-webserver"))
         await _.pid.kill("beastie-webserver");
     beastieWebserver = await _.startForeverProcess("./webserver", {
-        cwd: __dirname
+        cwd: __dirname,
+        sourceDir: __dirname
     }, "beastie-webserver");
     beastieWebserver.monitor.on("restart", function() {
         console.error("[beastie-monitor] restarting [beastie-webserver] for " + beastieWebserver.monitor.times + " time");
@@ -44,7 +45,8 @@ const forever = require("forever-monitor");
     if(await _.pid.check("beastie-chatbot"))
         await _.pid.kill("beastie-chatbot");
     beastieChatbot = await _.startForeverProcess("./chatbot", {
-        cwd: __dirname
+        cwd: __dirname,
+        sourceDir: __dirname
     }, "beastie-chatbot");
     beastieChatbot.monitor.on("restart", function() {
         console.error("[beastie-monitor] restarting [beastie-chatbot] for " + beastieChatbot.monitor.times + " time");

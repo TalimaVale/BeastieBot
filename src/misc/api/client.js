@@ -51,7 +51,7 @@ module.exports = api => ({
         }
 
         client.on("cheer", (channel, userstate, message) => {
-            client.emit("message", _.assign(userstate, { "message-type": "cheer" }), message);
+            client.emit("message", channel, _.assign(userstate, { "message-type": "cheer" }), message);
         });
 
         client.on("hosting", (channel, target, viewers) => {
