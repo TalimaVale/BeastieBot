@@ -1,16 +1,13 @@
 # Node Module Folders
-
 /[Nn]ode_modules/
 
-
-
 # Secret Files
+config/secrets.*
 
-config/secrets.js
-config/secrets.ini
+# Bot Data
 /data/
-ideas.js
-ideas2.js
-nbproject/private/private.properties
-nbproject/project.xml
-nbproject/project.properties
+/logs/
+/pids/
+
+# Development Environments
+nbproject/
