@@ -2,6 +2,8 @@
     This file is responsible for monitoring & ensuring that both the `chatbot` and `webserver` process are running; restarting either if they crash.
 
     This process also will tell both of them to shutdown gracefully if it receives a SIGINT message (primarily via IPC (Interprocess communication) -- thanks Windows).
+
+    Scryptonite: looks like beastie's first message was "testing" on (Thu, 13 Oct 2016 19:49:53 GMT) + 2 hours 55 minutes into the stream
 */
 
 
@@ -13,8 +15,8 @@ const forever = require("forever-monitor");
     let done, startup = new Promise(resolve => done=resolve);
     _.exitHandler(async () => {
         await Promise.race([
-            startup, 
-            _.sleep(6*1000).unref() 
+            startup,
+            _.sleep(6*1000).unref()
         ]);
         await Promise.all([
             _.stopProcess("beastie-webserver"),
