@@ -7,7 +7,7 @@ const path = require("path");
 
 
 const secrets = require("../../misc/secrets");
-const Twitter = require("Twitter");
+const Twitter = require("twitter");
 const Discord = require('discord.io');
 const YouTube = require('simple-youtube-api');
 
