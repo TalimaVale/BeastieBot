@@ -12,39 +12,39 @@ const api = module.exports = {
     clearance: {
         viewer: (channel, userstate) => true,
 
-        regular: (channel, userstate) => 
+        regular: (channel, userstate) =>
             [].includes(userstate.id)
             || api.clearance.moderator(channel, userstate),
         patron: (channel, userstate) =>
             [].includes(userstate.id)
             || api.clearance.moderator(channel, userstate),
-        subscriber: (channel, userstate) => 
+        subscriber: (channel, userstate) =>
             userstate.subscriber
             || "subscriber" in userstate.badges
             || api.clearance.moderator(channel, userstate),
 
-        _moderator: (channel, userstate) => 
-            userstate.mod 
+        _moderator: (channel, userstate) =>
+            userstate.mod
             || "moderator" in userstate.badges
             || userstate["user-type"] == "mod",
         moderator: (channel, userstate) =>
             api.clearance._moderator(channel, userstate)
             || api.clearance.super_moderator(channel, userstate),
-        super_moderator: (channel, userstate) => 
+        super_moderator: (channel, userstate) =>
             (   api.clearance._moderator(channel, userstate)
                 && [].includes(userstate.id) )
             || api.clearance.broadcaster(channel, userstate),
-        broadcaster: (channel, userstate) => 
+        broadcaster: (channel, userstate) =>
             userstate.name === channel.replace(/$#/, "")
             || "broadcaster" in userstate.badges
             || api.clearance.sudoer(channel, userstate),
-        sudoer: (channel, userstate) => 
+        sudoer: (channel, userstate) =>
             [].includes(userstate.id),
     },
 
     fetch(path = "", opts = { }){
         const endpoint = url.resolve("https://api.twitch.tv/kraken/", path);
-        const _endpoint = (url => 
+        const _endpoint = (url =>
             `${(url.protocol == "https:" ? chalk.gray : chalk.red)(url.protocol) + chalk.gray("//")}${url.host == "api.twitch.tv" ? chalk.gray(url.host) : url.host}${url.pathname}${chalk.magenta(_.isNull(url.search)?"":_.get(url, "search", ""))}`
         )(url.parse(endpoint));
 
@@ -55,23 +55,23 @@ const api = module.exports = {
                 "Accept": "application/vnd.twitchtv.v5+json",
                 "Client-ID": _.get(secrets, "client_id")
             });
-        } else if(host === "127.0.0.1:8080"){
+        } else if(host === "127.0.0.1:8080") {
             _.assign(headers, {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
                 "Client-ID": _.get(secrets, "webserver.client_id")
             });
-        }
+          }
 
         return fetch(endpoint, _.merge({
             method: "get", headers,
         }, opts)).then(response => {
             return response.json().then(body => {
-                if(!_.get(opts, "silent", false)) 
+                if(!_.get(opts, "silent", false))
                     console.log(
-                        "[%s] [debug %s] %s", 
-                        _.get(require("node-ipc"), "config.id", "?"), 
-                        (body.error ? chalk.yellow : chalk.green)("api.fetch"), 
+                        "[%s] [debug %s] %s",
+                        _.get(require("node-ipc"), "config.id", "?"),
+                        (body.error ? chalk.yellow : chalk.green)("api.fetch"),
                         _endpoint
                     );
                 // if(host === "127.0.0.1:8080")
@@ -79,11 +79,11 @@ const api = module.exports = {
                 return body;
             });
         }).catch(error => {
-            if(!_.get(opts, "silent", false)) 
+            if(!_.get(opts, "silent", false))
                 console.log(
-                    "[%s] [debug %s] %s", 
-                    _.get(require("node-ipc"), "config.id", "?"), 
-                    chalk.red("api.fetch"), 
+                    "[%s] [debug %s] %s",
+                    _.get(require("node-ipc"), "config.id", "?"),
+                    chalk.red("api.fetch"),
                     _endpoint
                 );
             return Promise.reject(error);
@@ -103,9 +103,9 @@ const api = module.exports = {
     },
     async twitch(user, path = undefined){
         if(_.isString(user)){
-            if(user.startsWith("#")) 
+            if(user.startsWith("#"))
                 user = { name: user.toLowerCase().replace(/$#/, "") };
-            else 
+            else
                 user = { name: user.toLowerCase() };
         }
 
@@ -115,7 +115,7 @@ const api = module.exports = {
             let match;
             if(_.has(user, "id") && user.id && !(match = _.find(this._users, { id: user.id }))){
                 await this.fetch(`users/${user.id}`).then(body => {
-                    if(body.error) 
+                    if(body.error)
                         return Promise.reject(body);
                     let _user = this.normalize(body);
                     _.assign(user, _user);
@@ -123,17 +123,17 @@ const api = module.exports = {
                 });
             } else if(_.has(user, "name") && user.name && !(match = _.find(this._users, { name: user.name }))){
                 await this.fetch(`users?${qs.stringify({ login: user.name })}`).then(body => {
-                    if(body.error) 
+                    if(body.error)
                         return Promise.reject(body);
-                    if(body.users == null 
-                    || body.users.length != 1) 
+                    if(body.users == null
+                    || body.users.length != 1)
                         return Promise.reject(body);
-                    
+
                     let _user = this.normalize(body.users[0]);
                     _.assign(user, _user);
                     this._users.push(_user);
                 });
-            } 
+            }
             if(match) _.assign(user, match);
 
             if(path !== undefined && !_.has(user, path)) return Promise.reject(`[error: unable to lookup ${path}`);

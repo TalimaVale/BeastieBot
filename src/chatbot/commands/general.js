@@ -1,9 +1,141 @@
 const qs = require("querystring");
 const _ = require("../../misc/utils");
 const api = require("../../misc/api");
+const fs = require("fs");
+const path = require("path");
+
+
+
+const secrets = require("../../misc/secrets");
+const Twitter = require("twitter");
+const Discord = require('discord.io');
+const YouTube = require('simple-youtube-api');
+
+// Initializing YouTube Bot
+const youtubeClient = secrets.youtube ? new YouTube(secrets.youtube.api_key) : null;
+
+// Initialize Twitter Bot
+const twitterClient = secrets.twitter ? new Twitter({
+  consumer_key: secrets.twitter.consumer_key,
+  consumer_secret: secrets.twitter.consumer_secret,
+  access_token_key: secrets.twitter.access_token_key,
+  access_token_secret: secrets.twitter.access_token_secret,
+}) : null;
+
+// Initialize Discord Bot
+const discordClient = secrets.discord ? new Discord.Client({
+    token: secrets.discord.token,
+    autorun: true
+}) : null;
 
 module.exports = async (client) => {
     const broadcaster = await require("../broadcaster");
+    let streamId = +fs.readFileSync(path.join(__dirname, `../../../data/stream-id`), { encoding: "utf8" });
+    let videoIds = fs.readFileSync(path.join(__dirname, `../../../data/video-ids`), { encoding: "utf8" });
+    let ttDiscordChannelID = '';
+    let newsDiscordChannelID = '';
+
+    setInterval(async () => {
+      const streamData = await api.fetch(`streams/${broadcaster.id}`).catch(()=>({stream: null}));
+      if(streamData.stream !== null) {
+        if(streamData.stream._id !== streamId) {
+          streamId = streamData.stream._id;
+          fs.writeFileSync(path.join(__dirname, `../../../data/stream-id`), streamId, { encoding: "utf8" });
+
+          if(twitterClient !== null){
+            twitterClient.post('statuses/update', {
+              status: `BeastieBot is rawring because we are LIVE! rawr https://www.twitch.tv/teamTALIMA#stream-${streamId} #teamTALIMA #GameDev #Awesomeness`
+            }, function(error, tweet, response) {
+              if(error) throw error;
+              console.log(tweet);  // Tweet body
+            });
+          }
+
+          if(discordClient !== null) {
+            discordClient.sendMessage({
+              to: newsDiscordChannelId,
+              message: `@here BeastieBot is rawring because we are LIVE! rawr https://www.twitch.tv/teamTALIMA`,
+            });
+          }
+        }
+      }
+
+      if(youtubeClient !== null) {
+        youtubeClient.getPlaylist('https://www.youtube.com/playlist?list=UUKjIJW6mQg7rEnDJ-KnVL-w')
+        .then(playlist => {
+            playlist.getVideos()
+            .then(myVideos => {
+                const myVideoIds = myVideos.map(video => video.id);
+                const newVideoId = myVideoIds.filter(videoId => !videoIds.includes(videoId));
+
+                if(newVideoId.length > 0){
+                  console.log(`Our new video's id: ${newVideoId[0]}`);
+                  videoIds = myVideoIds.join(`,`);
+                  fs.writeFileSync(path.join(__dirname, `../../../data/video-ids`), videoIds, { encoding: "utf8" });
+
+                  twitterClient.post('statuses/update', {
+                    status: `BeastieBot is rawring because Talima has posted a new video! rawr https://www.youtube.com/watch?v=${newVideoId[0]} #teamTALIMA #GameDev #Awesomeness`
+                  }, function(error, tweet, response) {
+                    if(error) throw error;
+                    console.log(tweet);  // Tweet body
+                  });
+
+                  discordClient.sendMessage({
+                    to: newsDiscordChannelId,
+                    message: `@here BeastieBot is rawring because Talima has posted a new video! rawr https://www.youtube.com/watch?v=${newVideoId[0]}`,
+                  });
+                }
+            })
+            .catch(console.log);
+        })
+        .catch(console.log);
+      }
+    }, 10 * 1000);
+
+    if(discordClient !== null) {
+      discordClient.on('ready', function (evt) {
+        console.log('Connnected');
+        console.log(`logged in as: ${discordClient.username} - (${discordClient.id})`);
+
+        ttDiscordChannelId = Object.values(discordClient.channels).find(channel => channel.name == "teamtalima" && channel.type == 0).id;
+        newsDiscordChannelId = Object.values(discordClient.channels).find(channel => channel.name == "news" && channel.type == 0).id;
+
+        discordClient.sendMessage({
+          to: ttDiscordChannelId,
+          message: `Hello Team! :D I have awoken! Welcome back to teamTALIMA's server!`,
+        });
+      });
+
+      discordClient.on('message', function (user, userID, channelID, message, evt) {
+        // Our bot needs to know if it will execute a command
+        // It will listen for messages that will start with `!`
+        if (message.substring(0, 1) == '!') {
+            let args = message.substring(1).split(' ');
+            const cmd = args[0];
+            console.log(`my channelID: ${channelID}`);
+
+            args = args.splice(1);
+            switch(cmd) {
+                // !hellobeastie
+                case 'hellobeastie':
+                    discordClient.sendMessage({
+                        to: channelID,
+                        message: `Hello ${user}! rawr`
+                    });
+                break;
+                // Just add any case commands if you want to..
+            }
+        }
+      });
+
+      discordClient.on("disconnect", (...args) => console.log(args));
+    }
+
+
+
+
+
+
 
     client
         .command("helpbeastie")
@@ -43,7 +175,7 @@ module.exports = async (client) => {
         .action(async (channel, userstate) => {
             await client.say(channel, `Hello ${userstate.display_name}! rawr`);
         });
-    
+
     client
         .command("goodbyebeastie")
         .alias("byebeastie", "goodbye", "bye")
@@ -75,7 +207,7 @@ module.exports = async (client) => {
         .description("Gives a shoutout to an awesome channel.")
         .clearance("moderator")
         .action(async (channel, userstate, messages) => {
-            
+
             let [command, name] = messages.split(" ");
 
             if(name == null || _.isEmpty(name)){

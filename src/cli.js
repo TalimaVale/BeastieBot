@@ -51,7 +51,7 @@ program.command("init").description("configure the secrets.ini").action(async ()
                 return _.get(secrets, name);
             } catch(err){
                 console.log(err);
-            } 
+            }
         }
     }
     function fetch_json(url, opts){
@@ -68,9 +68,9 @@ program.command("init").description("configure the secrets.ini").action(async ()
 
     console.log(chalk.gray("  Register your Chat Bot/Application to access the Twitch API:\n    https://www.twitch.tv/kraken/oauth2/clients/new"));
     let client_id = await ask(
-        "input", "client_id", 
-        "Your Client-ID?", 
-        _.get(secrets, "client_id"), 
+        "input", "client_id",
+        "Your Client-ID?",
+        _.get(secrets, "client_id"),
         async client_id => {
             console.log(chalk.gray("  Checking with the Twitch API..."));
             let body = await fetch_json("https://api.twitch.tv/kraken", {
@@ -82,8 +82,8 @@ program.command("init").description("configure the secrets.ini").action(async ()
                 return chalk.green(`  API check was successful.`);
             } else {
                 throw chalk.red(`  API check failed. ${
-                    body && body.message ? 
-                        `(Twitch API says "${ body.message }")` : 
+                    body && body.message ?
+                        `(Twitch API says "${ body.message }")` :
                         `(Network Failure)`
                 }`);
             }
@@ -93,7 +93,7 @@ program.command("init").description("configure the secrets.ini").action(async ()
     console.log(chalk.gray("  You can get an OAuth token by connecting your Broadcaster's Twitch account here:\n    https://twitchapps.com/tmi/"));
     let broadcaster_oauth = _.get(secrets, "broadcaster.oauth");
     await ask(
-        "password", "broadcaster.oauth", 
+        "password", "broadcaster.oauth",
         `Your Broadcaster's OAuth Token?${
             broadcaster_oauth ? chalk.gray(" (leave blank to use token in secrets.ini)") : ""
         }`, undefined,
@@ -114,8 +114,8 @@ program.command("init").description("configure the secrets.ini").action(async ()
                 }`);
             } else {
                 throw chalk.red(`  API check failed. ${
-                    body && body.message ? 
-                        `(Twitch API says "${ body.message }")` : 
+                    body && body.message ?
+                        `(Twitch API says "${ body.message }")` :
                         `(Network Failure)`
                 }`);
             }
@@ -125,7 +125,7 @@ program.command("init").description("configure the secrets.ini").action(async ()
     console.log(chalk.gray("  You can get an OAuth token by connecting your Bot's Twitch account here:\n    https://twitchapps.com/tmi/"));
     let beastie_oauth = _.get(secrets, "beastie.oauth");
     await ask(
-        "password", "beastie.oauth", 
+        "password", "beastie.oauth",
         `Your Bot's OAuth Token?${
             beastie_oauth ? chalk.gray(" (leave blank to use token in secrets.ini)") : ""
         }`, undefined,
@@ -146,8 +146,8 @@ program.command("init").description("configure the secrets.ini").action(async ()
                 }`);
             } else {
                 throw chalk.red(`  API check failed. ${
-                    body && body.message ? 
-                        `(Twitch API says "${ body.message }")` : 
+                    body && body.message ?
+                        `(Twitch API says "${ body.message }")` :
                         `(Network Failure)`
                 }`);
             }
@@ -157,9 +157,8 @@ program.command("init").description("configure the secrets.ini").action(async ()
     // _.set(secrets, "webserver.overlay_token", _.get(secrets, "webserver.overlay_token", rt.generate(32)));
     // _.set(secrets, "webserver.jwt_secret", _.get(secrets, "webserver.jwt_secret", rt.generate(32)));
     _.set(secrets, "webserver.client_id", _.get(secrets, "webserver.client_id", rt.generate(32)));
-
     console.log(chalk.green("Done acquiring secrets."));
-    
+
     const contents = `; ${ (new Date).toJSON() }\n;\n; Be careful not to show this file on stream!${ "\n;".repeat(120) }\n; (whew)\n\n${ _.ini.encode(secrets) }`;
     await _.ini.write("config/secrets", contents);
 
