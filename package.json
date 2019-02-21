@@ -1,6 +1,6 @@
 {
   "name": "beastiebot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "teamTALIMA's personal BeastieBot, trained to watch over Twitch chatrooms and Discord servers",
   "scripts": {
     "start": "node ./src/monitor",
@@ -57,7 +57,7 @@
     "mkdirp": "^0.5.1",
     "node-fetch": "^1.7.1",
     "node-ipc": "^9.0.1",
-    "rand-token": "^0.3.0",
+    "rand-token": "^0.4.0",
     "serve-favicon": "^2.4.3",
     "simple-youtube-api": "^5.1.1",
     "tmi.js": "^1.2.1",
