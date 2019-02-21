@@ -33,7 +33,7 @@ To initialize Beastie, use the same command line and run:
 node . init
 ```
 You will be presented interactive prompts. Follow them, and provide your Twitch Client-ID, Broadcaster channel's OAuth (channel which will stream) and Bot channel's OAuth (channel which will be Beastie).
-* [*Where can I get a Twitch Client-ID?*](https://www.twitch.tv/kraken/oauth2/clients/new)
+* [*Where can I get a Twitch Client-ID?*](https://dev.twitch.tv/dashboard/apps/create)
 * [*Where do I get an OAuth Token for my Twitch account?*](https://twitchapps.com/tmi/)
 
 To start Beastie, use the same command line and run:
