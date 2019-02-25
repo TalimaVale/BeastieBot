@@ -62,7 +62,7 @@ All contributions should be made through [teamTALIMA's](https://github.com/teamT
 
 [Discord Server](https://discordapp.com/invite/dGFQ5tE "teamTALIMA's Discord Server")
 
-[YouTube Channel](https://www.youtube.com/channel/UCQEtRUEQItKpn-q_ZBJXUVQ "teamTALIMA's YouTube Channel")
+[YouTube Channel](https://www.youtube.com/channel/UCKjIJW6mQg7rEnDJ-KnVL-w "teamTALIMA's YouTube Channel")
 
 ## License
 GNU GPLv3
