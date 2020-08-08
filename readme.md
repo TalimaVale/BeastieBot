@@ -1,6 +1,6 @@
 # Introducing BeastieBot
 ## Welcome to the BeastieBot chatbot!
-Beastie is an ongoing, open source, chatbot project created by [teamTALIMA](https://github.com/teamTALIMA). Originally designed for Twitch IRC chat rooms, Beastie can now also join Discord servers and Twitter accounts. Beastie is a customizable live streaming tool and online community moderator.
+(OLD PROJECT REPOSITORY) Beastie is an ongoing, open source, chatbot project created by [teamTALIMA](https://github.com/teamTALIMA). Originally designed for Twitch IRC chat rooms, Beastie can now also join Discord servers and Twitter accounts. Beastie is a customizable live streaming tool and online community moderator.
 
 Primary Features include:
 
